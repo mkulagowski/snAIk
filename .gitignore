@@ -1,0 +1,16 @@
+# Output dir and files
+/Bin
+*.a
+*.so
+
+# Visual Studio Performance Analysis Results
+*.vsp
+*.psess
+
+# Other useless folders and file patterns
+*.opensdf
+*.opendb
+*.sdf
+*.suo
+*.vcxproj.user
+*.VC.db

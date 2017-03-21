@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="external\glew-1.13.0\bin\Release\x64\glew32.dll">
+      <Link>%(FileName)%(Extension)</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PhysicsLoader.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="source\FileSystem.cpp" />
+    <ClCompile Include="source\GameManager.cpp" />
+    <ClCompile Include="source\main.cpp" />
+    <ClCompile Include="source\Objects\AsteroidObject.cpp" />
+    <ClCompile Include="source\Objects\PlayerObject.cpp" />
+    <ClCompile Include="source\Objects\Primitives\BoxObject.cpp" />
+    <ClCompile Include="source\Objects\Primitives\Object.cpp" />
+    <ClCompile Include="source\Objects\Primitives\PlaneObject.cpp" />
+    <ClCompile Include="source\Objects\Primitives\PyramidObject.cpp" />
+    <ClCompile Include="source\Objects\ProjectileObject.cpp" />
+    <ClCompile Include="source\Objects\WallObject.cpp" />
+    <ClCompile Include="source\Physics.cpp" />
+    <ClCompile Include="source\Renderer.cpp" />
+    <ClCompile Include="source\Timer.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="source\FileSystem.hpp" />
+    <ClInclude Include="source\GameManager.hpp" />
+    <ClInclude Include="source\Objects\AsteroidObject.hpp" />
+    <ClInclude Include="source\Objects\GameObjects.hpp" />
+    <ClInclude Include="source\Objects\PlayerObject.hpp" />
+    <ClInclude Include="source\Objects\Primitives\BoxObject.hpp" />
+    <ClInclude Include="source\Objects\Primitives\Object.hpp" />
+    <ClInclude Include="source\Objects\Primitives\PlaneObject.hpp" />
+    <ClInclude Include="source\Objects\Primitives\PyramidObject.hpp" />
+    <ClInclude Include="source\Objects\ProjectileObject.hpp" />
+    <ClInclude Include="source\Objects\WallObject.hpp" />
+    <ClInclude Include="source\Physics.hpp" />
+    <ClInclude Include="source\Renderer.hpp" />
+    <ClInclude Include="source\Timer.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="source\Shaders\Main.fragmentshader" />
+    <None Include="source\Shaders\Main.vertexshader" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2A30954D-3D9A-4697-A264-A3B669825B95}</ProjectGuid>
+    <RootNamespace>SnAIk</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <ProjectName>SnAIk</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\temp\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\temp\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>external\glm-0.9.7.1;external\glew-1.13.0\include;external\bullet3-2.83.7\src;external\glfw\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;Bin\x64\Debug\glfw.lib;external\glew-1.13.0\lib\Release\x64\glew32.lib;external\glew-1.13.0\lib\Release\x64\glew32s.lib;external\bullet3-2.83.7\bin\BulletCollision_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\BulletDynamics_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\BulletSoftBody_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\LinearMath_vs2010_x64_release.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>external\glm-0.9.7.1;external\glew-1.13.0\include;external\bullet3-2.83.7\src;external\glfw\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <DebugInformationFormat>None</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Bin\x64\Release\glfw.lib;external\glew-1.13.0\lib\Release\x64\glew32.lib;external\glew-1.13.0\lib\Release\x64\glew32s.lib;external\bullet3-2.83.7\bin\BulletCollision_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\BulletDynamics_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\BulletSoftBody_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\LinearMath_vs2010_x64_release.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>No</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
