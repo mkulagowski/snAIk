@@ -2,6 +2,7 @@
 
 namespace
 {
+
 static double GetCounterPeriod()
 {
     LARGE_INTEGER freq;
@@ -10,6 +11,7 @@ static double GetCounterPeriod()
 }
 
 static const double mPeriod = GetCounterPeriod();
+
 }
 
 

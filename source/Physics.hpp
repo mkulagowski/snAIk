@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 #include <btBulletDynamicsCommon.h>
 
 
@@ -20,6 +19,6 @@ private:
     btBroadphaseInterface* mBroadphase;
     btDefaultCollisionConfiguration* mCollisionConfiguration;
     btCollisionDispatcher* mDispatcher;
-    btSequentialImpulseConstraintSolver* mSolver;
+    btConstraintSolver* mSolver;
     btDiscreteDynamicsWorld* mDynamicsWorld;
 };

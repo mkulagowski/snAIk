@@ -6,11 +6,13 @@
 #include "Timer.hpp"
 #include "Physics.hpp"
 #include "Renderer.hpp"
-#include "Objects/GameObjects.hpp"
+#include "Objects/WallObject.hpp"
+#include "Objects/SegmentObject.hpp"
 
-#define SHOOTING_INTERVAL_SEC 0.25f
-#define SHIP_MOVEMENT_SPEED 100.0f
 
+#define MOVEMENT_SPEED 10.0f
+#define SEGMENT_LIMIT 15
+#define TOTAL_WEIGHT 5
 
 class GameManager
 {
@@ -23,14 +25,10 @@ public:
     unsigned short GetHeight();
 
 private:
-    double mShootInterval;
     unsigned int mWidth, mHeight;
     unsigned int mScore;
 
-    PlayerObject mPlayer;
-    //WallObject mConstraints[4];
-    std::forward_list<RockObject> mAsteroids;
-    std::forward_list<ProjectileObject> mBullets;
+    std::vector<SegmentObject*> mSegments;
 
     GLFWwindow* mGameWindow;
     Timer mGameTimer;
@@ -41,9 +39,6 @@ private:
     GameManager();
     ~GameManager();
 
-    void Reinit();
-    void CheckCollisions();
-    void CheckAsteroids();
     void GetPlayerInput(double deltaTime);
-    void UpdateObjectsArrays();
+    void CreateSnake();
 };

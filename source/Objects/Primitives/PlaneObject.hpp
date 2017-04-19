@@ -10,8 +10,6 @@ public:
     PlaneObject(btVector3 planeNormal, float halfSizeX, float halfSizeY);
     ~PlaneObject();
 
-    CollisionResult Collide(ObjectType otherObj) override;
-
 private:
     btVector3 mPlaneNormal;
 

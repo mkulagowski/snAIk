@@ -38,12 +38,6 @@ PlaneObject::PlaneObject(btVector3 planeNormal)
 PlaneObject::~PlaneObject()
 {}
 
-CollisionResult PlaneObject::Collide(ObjectType otherObj)
-{
-    // Planes are indifferent to collisions
-    return CollisionResult::None;
-}
-
 void PlaneObject::AddShape()
 {
     mShape = new btStaticPlaneShape(mPlaneNormal, 0);

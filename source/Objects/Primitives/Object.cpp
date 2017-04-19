@@ -2,14 +2,11 @@
 
 #define M_PI 3.14159265358979323846
 
-
 Object::Object()
-    : mType(ObjectType::None)
-    , mVertexArrayID(GL_NONE)
+    : mVertexArrayID(GL_NONE)
     , mNormalArrayID(GL_NONE)
     , mIndexArrayID(GL_NONE)
-    , mToDelete(false)
-    , mVelocity(10.0f)
+    , mVelocity(1.0f)
     , mInitDone(false)
     , mShape(nullptr)
     , mBody(nullptr)
@@ -73,18 +70,22 @@ void Object::InitPhysics(float mass)
     btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), position));
 
     // Calculate inertia
-    btVector3 inertia;
+    btVector3 inertia(0, 0, 0);
     mShape->calculateLocalInertia(mass, inertia);
 
     // Create a rigid body
     btRigidBody::btRigidBodyConstructionInfo bulletRigidBodyCI(mass, motionState, mShape, inertia);
     mBody = new btRigidBody(bulletRigidBodyCI);
+    
+    // Set friction and angular factor for dynamic objects
+    if (mass > 0)
+    {
+        mBody->setAngularFactor(btVector3(1, 0, 1));
+        mBody->setAnisotropicFriction(btVector3(2, 1, 2));
+    }
 
     // Set rigid bodys pointer to this Object
     mBody->setUserPointer(this);
-
-    // Set movement axes
-    mBody->setLinearFactor(btVector3(1, 0, 1));
 }
 
 void Object::Bind() const
@@ -153,11 +154,6 @@ void Object::SetColor(btVector3 color)
 btVector3 Object::GetColor() const
 {
     return mColor;
-}
-
-bool Object::ToDelete() const
-{
-    return mToDelete;
 }
 
 btRigidBody* Object::GetBody() const

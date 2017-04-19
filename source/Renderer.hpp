@@ -17,7 +17,6 @@ public:
     ~Renderer();
 
     bool Init();
-    void Update();
 
     void Draw() const;
     void AddObject(const Object* obj);

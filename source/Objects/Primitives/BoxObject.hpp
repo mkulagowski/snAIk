@@ -14,5 +14,4 @@ private:
     btVector3 mHalfSize;
 
     void AddShape() override;
-
 };

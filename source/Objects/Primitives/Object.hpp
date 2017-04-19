@@ -5,29 +5,9 @@
 #include <btBulletDynamicsCommon.h>
 #include <vector>
 
-enum class ObjectType
-{
-    None,
-    Wall,
-    Player,
-    Projectile,
-    Asteroid
-};
-
-enum class CollisionResult
-{
-    None,
-    Reinit,
-    Score,
-};
-
-
 class Object
 {
 public:
-    ObjectType mType;
-
-
     Object();
     ~Object();
 
@@ -48,10 +28,6 @@ public:
     void Move(double distance, btVector3 direction);
     void Rotate (float degrees, btVector3 rotationAxis);
 
-    bool ToDelete() const;
-
-    virtual CollisionResult Collide(ObjectType otherObj) = 0;
-
 protected:
     GLuint mVertexArrayID, mNormalArrayID, mIndexArrayID;
     std::vector<float> mVertexData;
@@ -63,9 +39,7 @@ protected:
 
     float mVelocity;
     btVector3 mColor;
-    bool mToDelete;
     bool mInitDone;
-
 
     virtual void AddShape() = 0;
     void InitPhysics(float mass);

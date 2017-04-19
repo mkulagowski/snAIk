@@ -12,7 +12,6 @@
 Renderer::Renderer()
     : mDummyVAO(GL_NONE)
 {
-
 }
 
 Renderer::~Renderer()
@@ -83,12 +82,6 @@ bool Renderer::Init()
     glEnableVertexAttribArray(1);
 
     return true;
-}
-
-void Renderer::Update()
-{
-    // Remove all objects with mToDelete set.
-    mObjectList.remove_if([](const Object* i){ return i->ToDelete(); });
 }
 
 void Renderer::Draw() const

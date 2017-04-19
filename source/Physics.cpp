@@ -1,13 +1,14 @@
 #include <BulletCollision/Gimpact/btGImpactCollisionAlgorithm.h>
 
 #include "Physics.hpp"
+#include "snakeSolver.hpp"
 
 
 Physics::Physics()
     : mBroadphase(new btDbvtBroadphase)
     ,mCollisionConfiguration(new btDefaultCollisionConfiguration)
     ,mDispatcher(new btCollisionDispatcher(mCollisionConfiguration))
-    ,mSolver(new btSequentialImpulseConstraintSolver)
+    ,mSolver(new snakeSolver)
     ,mDynamicsWorld(new btDiscreteDynamicsWorld(mDispatcher, mBroadphase, mSolver,
                                                 mCollisionConfiguration))
 {
@@ -27,7 +28,7 @@ bool Physics::Init()
 {
     if (mDynamicsWorld)
     {
-        // Set no gravity
+        // Change gravity to Z axis (standard is -10 on Y)
         mDynamicsWorld->setGravity(btVector3(0, 0, -10));
         return true;
     }
@@ -37,17 +38,20 @@ bool Physics::Init()
 
 void Physics::AddObject(btRigidBody* object)
 {
-    mDynamicsWorld->addRigidBody(object);
+    if (mDynamicsWorld)
+        mDynamicsWorld->addRigidBody(object);
 }
 
 void Physics::RemoveObject(btRigidBody* object)
 {
-    mDynamicsWorld->removeRigidBody(object);
+    if (mDynamicsWorld)
+        mDynamicsWorld->removeRigidBody(object);
 }
 
+// This function should be as fast as possible, so there is no pointer check!
 void Physics::Update(double deltaTime)
 {
-    mDynamicsWorld->stepSimulation(static_cast<btScalar>(deltaTime), 7);
+    mDynamicsWorld->stepSimulation(static_cast<btScalar>(deltaTime));// , 7);
 }
 
 btDynamicsWorld* Physics::GetWorld()

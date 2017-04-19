@@ -19,36 +19,32 @@
   <ItemGroup>
     <ClCompile Include="PhysicsLoader.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="source\FileSystem.cpp" />
     <ClCompile Include="source\GameManager.cpp" />
     <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\Objects\AsteroidObject.cpp" />
-    <ClCompile Include="source\Objects\PlayerObject.cpp" />
+    <ClCompile Include="source\Objects\SegmentObject.cpp" />
     <ClCompile Include="source\Objects\Primitives\BoxObject.cpp" />
     <ClCompile Include="source\Objects\Primitives\Object.cpp" />
     <ClCompile Include="source\Objects\Primitives\PlaneObject.cpp" />
-    <ClCompile Include="source\Objects\Primitives\PyramidObject.cpp" />
-    <ClCompile Include="source\Objects\ProjectileObject.cpp" />
     <ClCompile Include="source\Objects\WallObject.cpp" />
     <ClCompile Include="source\Physics.cpp" />
     <ClCompile Include="source\Renderer.cpp" />
+    <ClCompile Include="source\snakeSolver.cpp" />
     <ClCompile Include="source\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\FileSystem.hpp" />
     <ClInclude Include="source\GameManager.hpp" />
-    <ClInclude Include="source\Objects\AsteroidObject.hpp" />
-    <ClInclude Include="source\Objects\GameObjects.hpp" />
-    <ClInclude Include="source\Objects\PlayerObject.hpp" />
+    <ClInclude Include="source\Objects\SegmentObject.hpp" />
     <ClInclude Include="source\Objects\Primitives\BoxObject.hpp" />
     <ClInclude Include="source\Objects\Primitives\Object.hpp" />
     <ClInclude Include="source\Objects\Primitives\PlaneObject.hpp" />
-    <ClInclude Include="source\Objects\Primitives\PyramidObject.hpp" />
-    <ClInclude Include="source\Objects\ProjectileObject.hpp" />
     <ClInclude Include="source\Objects\WallObject.hpp" />
     <ClInclude Include="source\Physics.hpp" />
     <ClInclude Include="source\Renderer.hpp" />
+    <ClInclude Include="source\snakeSolver.hpp" />
     <ClInclude Include="source\Timer.hpp" />
   </ItemGroup>
   <ItemGroup>

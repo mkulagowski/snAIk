@@ -8,15 +8,18 @@
 
 #include "GameManager.hpp"
 
+constexpr float SEGMENT_WEIGHT = SEGMENT_LIMIT != 0 ? TOTAL_WEIGHT / static_cast<float>(SEGMENT_LIMIT) : 0;
+constexpr float PI = 3.14159265358979323846f;
+constexpr float PI2 = PI / 2.0f;
+constexpr float PI4 = PI / 4.0f;
+constexpr float PI6 = PI / 6.0f;
+constexpr float PI12 = PI / 12.0f;
+
+SegmentObject* mHead = nullptr;
 
 GameManager::GameManager()
     : mWidth(1024)
     , mHeight(768)
-    /*, mConstraints{
-        WallObject(btVector3( 0, 0, 1)),
-        WallObject(btVector3(-1, 0, 0)),
-        WallObject(btVector3( 0, 0, 1)),
-        WallObject(btVector3( 1, 0, 0))}*/
 {
 }
 
@@ -51,7 +54,7 @@ bool GameManager::Init()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 
     // Create window
-    mGameWindow = glfwCreateWindow(mWidth, mHeight, "11Bit Homework", NULL, NULL);
+    mGameWindow = glfwCreateWindow(mWidth, mHeight, "SnAIk", NULL, NULL);
     if (mGameWindow == NULL)
     {
         fprintf(stderr, "GAMEMANAGER: Failed to open GLFW window. If you have an Intel GPU, they are not OGL3.3 compatible.\n");
@@ -65,52 +68,35 @@ bool GameManager::Init()
     glfwSetInputMode(mGameWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
     // Initialize renderer and physics world
-    if(!mRenderer.Init())
+    if (!mRenderer.Init())
     {
         fprintf(stderr, "GAMEMANAGER: Failed to initialize Renderer module.\n");
         return false;
     }
 
-    if(!mPhysics.Init())
+    if (!mPhysics.Init())
     {
         fprintf(stderr, "GAMEMANAGER: Failed to initialize Physics module.\n");
         glfwTerminate();
         return false;
     }
 
-    // Initialize and set up player
-    mPlayer.Init(btVector3(0, 1, 0), 10.0f);
-    mPlayer.GetBody()->setAngularFactor(0);
-    mPlayer.Move(0.25f, btVector3(0, 0, 1));
-    mPlayer.GetBody()->forceActivationState(DISABLE_DEACTIVATION);
+    // Create floor
+    PlaneObject* floor = new PlaneObject(btVector3(0, 0, 1), 100.0f, 100.0f);
+    floor->Init(btVector3(1, 1, 1), 0.0f);
+    mRenderer.AddObject(floor);
+    mPhysics.AddObject(floor->GetBody());
 
-    BoxObject* bo = new RockObject(btVector3(1,1,1));
-    bo->Init(btVector3(1, 0, 0), 5.0f);
-    mRenderer.AddObject(bo);
-    bo->Move(1.0f, btVector3(0, 0, 1));
-    mPhysics.AddObject(bo->GetBody());
-    bo = new RockObject(btVector3(1, 1, 1));
-    bo->Init(btVector3(1, 1, 0), 5.0f);
-    mRenderer.AddObject(bo);
-    bo->Move(0.5f, btVector3(0, 1, 1));
-    mPhysics.AddObject(bo->GetBody());
-    bo = new RockObject(btVector3(1, 1, 1));
-    bo->Init(btVector3(1, 0, 1), 5.0f);
-    mRenderer.AddObject(bo);
-    bo->Move(0.5f, btVector3(1, 0, 1));
-
-    PlaneObject* po = new PlaneObject(btVector3(0, 0, 1), 20.0f, 20.0f);
-    po->Init(btVector3(1, 1, 1), 0.0f);
-    mRenderer.AddObject(po);
-    mPhysics.AddObject(po->GetBody());
-    mPhysics.AddObject(bo->GetBody());
+    // Create snake
+    CreateSnake();
 
     return true;
 }
 
 void GameManager::MainLoop()
 {
-    std::string titleStr = "Arkanoid - Score ";
+    std::string titleStr = "SnAIk head velocity = ";
+    glfwSetWindowTitle(mGameWindow, titleStr.c_str());
     double deltaTime;
     mGameTimer.Start();
 
@@ -121,14 +107,13 @@ void GameManager::MainLoop()
         mGameTimer.Start();
 
         // Show score in windows title
-        glfwSetWindowTitle(mGameWindow, (titleStr + std::to_string(mScore)).c_str());
+        glfwSetWindowTitle(mGameWindow, (titleStr + std::to_string(mHead->GetBody()->getLinearVelocity().length())).c_str());
 
         // Get players input
-        //GetPlayerInput(deltaTime);
+        GetPlayerInput(deltaTime);
 
         // Update physics world and check for collisions
         mPhysics.Update(deltaTime);
-        //CheckCollisions();
 
         // Draw all objects in renderer
         mRenderer.Draw();
@@ -142,24 +127,6 @@ void GameManager::MainLoop()
            glfwWindowShouldClose(mGameWindow) == 0);
 }
 
-void GameManager::Reinit()
-{
-    // Make all objects ready to be removed from physics and renderer
-    // by the UpdateObjectsArrays() method
-    for (auto& i : mAsteroids)
-        i.Collide(ObjectType::Wall);
-    for (auto& i : mBullets)
-        i.Collide(ObjectType::Wall);
-
-    // Reset players position
-    mPlayer.SetPosition(btVector3(0, 0, 0));
-    mPlayer.Move(0.25f, btVector3(0, 0, 1));
-
-    // Reset score and shooting delay
-    mScore = 0;
-    mShootInterval = 0;
-}
-
 
 unsigned short GameManager::GetWidth()
 {
@@ -171,165 +138,146 @@ unsigned short GameManager::GetHeight()
     return mHeight;
 }
 
+void GameManager::CreateSnake()
+{
+    if (SEGMENT_LIMIT <= 0)
+        return;
+
+    SegmentObject* bo;
+    for (int i = 0; i < SEGMENT_LIMIT; i++)
+    {
+        bo = new SegmentObject(btVector3(1, 1, 1));
+        bo->Init(btVector3(0, 1, 0), SEGMENT_WEIGHT);
+        mRenderer.AddObject(bo);
+        bo->Move(i * 1.0f, btVector3(1, 0, 0));
+        mPhysics.AddObject(bo->GetBody());
+        bo->GetBody()->forceActivationState(DISABLE_DEACTIVATION);
+        mSegments.push_back(bo);
+    }
+
+    btConeTwistConstraint* coneC;
+    btTransform localA, localB;
+    btRigidBody *b1, *b2;
+    for (int i = 0; i < SEGMENT_LIMIT - 1; i++)
+    {
+        mSegments[i]->Move(2.0f, btVector3(0, 0, 1));
+        mSegments[i + 1]->Move(2.0f, btVector3(0, 0, 1));
+        b1 = mSegments[i]->GetBody();
+        b2 = mSegments[i + 1]->GetBody();
+
+        localA.setIdentity();
+        localB.setIdentity();
+
+        localA.getBasis().setEulerZYX(0, 0, PI2); localA.setOrigin(btVector3(0.f, 1.f, 0.f));
+        localB.getBasis().setEulerZYX(0, 0, PI2); localB.setOrigin(btVector3(0.f, -1.f, 0.f));
+
+        coneC = new btConeTwistConstraint(*b1, *b2, localA, localB);
+        coneC->setLimit(PI6, PI6, PI12,
+                        1.f, .15f, .5f);
+
+        mPhysics.GetWorld()->addConstraint(coneC, true);
+    }
+
+    mHead = mSegments[0];
+    mHead->SetColor(btVector3(1, 1, 0));
+}
+
 void GameManager::GetPlayerInput(double deltaTime)
 {
-    // Reset players movement
-    mPlayer.GetBody()->setLinearVelocity(btVector3(0, 0, 0));
+    btVector3 moveVect(0,0,0);
+    float side = 0, forward = 0, upward = 0;
+    int segmentIdx = 1;
 
     // Strafe right
-    if (glfwGetKey(mGameWindow, GLFW_KEY_RIGHT) == GLFW_PRESS
-        && mPlayer.GetPosition().getX() < 50.0f)
+    if (glfwGetKey(mGameWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
     {
-        mPlayer.GetBody()->setLinearVelocity(btVector3(SHIP_MOVEMENT_SPEED, 0, 0));
+        moveVect.setX(-MOVEMENT_SPEED);
     }
 
     // Strafe left
-    if (glfwGetKey(mGameWindow, GLFW_KEY_LEFT) == GLFW_PRESS
-        && mPlayer.GetPosition().getX() > -50.0f)
+    if (glfwGetKey(mGameWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
     {
-        mPlayer.GetBody()->setLinearVelocity(btVector3(-SHIP_MOVEMENT_SPEED, 0, 0));
+        moveVect.setX(+MOVEMENT_SPEED);
     }
 
-    // Shoot a projectile
-    mShootInterval -= deltaTime;
-    if (glfwGetKey(mGameWindow, GLFW_KEY_SPACE) == GLFW_PRESS && mShootInterval <= 0)
+    // Strafe left
+    if (glfwGetKey(mGameWindow, GLFW_KEY_UP) == GLFW_PRESS)
     {
-        // Create and init a projectile
-        mBullets.push_front(ProjectileObject());
-        ProjectileObject* bullet = &mBullets.front();
-        bullet->Init(btVector3(1, 1, 0), 10.0f);
-
-        // Move it just above the ship
-        bullet->SetPosition(mPlayer.GetPosition());
-        bullet->Move(0.5f, btVector3(0, 0, -1));
-
-        // Set up movement and rotation and rotation axis
-        bullet->GetBody()->setLinearVelocity(btVector3(0, 0, -20));
-        bullet->GetBody()->setAngularVelocity(btVector3(0, 0, 10));
-        bullet->GetBody()->setAngularFactor(btVector3(0, 0, 1));
-
-        // Add projectile to renderer and physics world
-        mRenderer.AddObject(bullet);
-        mPhysics.AddObject(bullet->GetBody());
-
-        // Reset shooting interval timer
-        mShootInterval = SHOOTING_INTERVAL_SEC;
+        moveVect.setZ(-MOVEMENT_SPEED);
     }
-}
-
-void GameManager::CheckCollisions()
-{
-    // Get number of manifolds from the physics world
-    btDynamicsWorld* world = mPhysics.GetWorld();
-    int numManifolds = world->getDispatcher()->getNumManifolds();
-    for (int i = 0; i < numManifolds; i++)
+    // Strafe left
+    if (glfwGetKey(mGameWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
-        // If manifold has any contact with other body - it's a collision
-        btPersistentManifold* contactManifold = world->getDispatcher()->getManifoldByIndexInternal(i);
-
-        int numContacts = contactManifold->getNumContacts();
-        if (numContacts > 0)
-        {
-            // Get colliding bodies and cast them to Object pointers
-            const btCollisionObject* bodyA = contactManifold->getBody0();
-            const btCollisionObject* bodyB = contactManifold->getBody1();
-
-            Object* objectA = reinterpret_cast<Object*>(bodyA->getUserPointer());
-            Object* objectB = reinterpret_cast<Object*>(bodyB->getUserPointer());
-
-            // Check collisions for each object colliding
-            CollisionResult resultA = objectA->Collide(objectB->mType);
-            CollisionResult resultB = objectB->Collide(objectA->mType);
-
-            // Resolve collision effects
-            if (resultA == CollisionResult::Score
-                || resultB == CollisionResult::Score)
-            {
-                mScore++;
-            }
-            else if (resultA == CollisionResult::Reinit
-                     || resultB == CollisionResult::Reinit)
-            {
-                Reinit();
-                return;
-            }
-        }
-    }
-}
-
-void GameManager::UpdateObjectsArrays()
-{
-    bool updateNeeded = false;
-
-    // Iterate bullets and asteroids object arrays
-    // if mToDelete is set -> remove object from physics world
-    for (auto& i : mBullets)
-    {
-        if (i.ToDelete())
-        {
-            mPhysics.RemoveObject(i.GetBody());
-            updateNeeded = true;
-        }
+        moveVect.setZ(MOVEMENT_SPEED);
     }
 
-    for (auto& i : mAsteroids)
+    // Strafe left
+    if (glfwGetKey(mGameWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
-        if (i.ToDelete())
-        {
-            mPhysics.RemoveObject(i.GetBody());
-            updateNeeded = true;
-        }
+        moveVect.setY(MOVEMENT_SPEED);
     }
 
-    // If any object was deleted, Renderer and local arrays need update
-    if (updateNeeded)
+    
+    if (glfwGetKey(mGameWindow, GLFW_KEY_Q) == GLFW_PRESS)
     {
-        mRenderer.Update();
-        mBullets.remove_if([](const ProjectileObject& i){ return i.ToDelete(); });
-        mAsteroids.remove_if([](const RockObject& i){ return i.ToDelete(); });
+        side = MOVEMENT_SPEED;
+        segmentIdx = 1;
     }
-}
-
-void GameManager::CheckAsteroids()
-{
-    // Calculate number of asteroids in the game
-    unsigned int asteroidsNo;
-    asteroidsNo = static_cast<unsigned int>(std::distance(mAsteroids.begin(),
-                                                          mAsteroids.end()));
-
-    // Number of asteroids is relative to the player's score
-    if (mScore >= asteroidsNo)
+    if (glfwGetKey(mGameWindow, GLFW_KEY_A) == GLFW_PRESS)
     {
-        // Randomize size and rotation
-        float sizeX, sizeY, sizeZ, rotX, rotY, rotZ;
-        sizeX = (std::rand() % 10) + 1.0f;
-        sizeY = (std::rand() % 10) + 1.0f;
-        sizeZ = (std::rand() % 10) + 1.0f;
-        rotX = ((std::rand() % 24) - 12) / 4.0f;
-        rotY = ((std::rand() % 24) - 12) / 4.0f;
-        rotZ = ((std::rand() % 24) - 12) / 4.0f;
-
-        // Randomize position on the upper end of the screen
-        float position = ((std::rand() % 96) - 48.0f) / 8.0f;
-
-        // Randomize falling deviation
-        float deviation = ((std::rand() % 40) - 20.0f) / 10.0f;
-
-        // Create asteroid and move it onto position
-        mAsteroids.push_front(RockObject(btVector3(sizeX, sizeY, sizeZ)));
-        RockObject* meteor = &mAsteroids.front();
-        meteor->Init(btVector3(0, 0, 1), 10.0f);
-
-        // Move it onto position
-        meteor->Move(position, btVector3(1, 0, 0));
-        meteor->Move(6.0f, btVector3(0, 0, -1));
-
-        // Set movement and rotation
-        meteor->GetBody()->setLinearVelocity(btVector3(deviation, 0, 10.0f));
-        meteor->GetBody()->setAngularVelocity(btVector3(rotX, rotY, rotZ));
-
-        // Add to renderer and physics world
-        mRenderer.AddObject(meteor);
-        mPhysics.AddObject(meteor->GetBody());
+        side = -MOVEMENT_SPEED;
+        segmentIdx = 1;
     }
+
+
+    if (glfwGetKey(mGameWindow, GLFW_KEY_W) == GLFW_PRESS)
+    {
+        side = MOVEMENT_SPEED;
+        segmentIdx = (SEGMENT_LIMIT * 2) / 5;
+    }
+    if (glfwGetKey(mGameWindow, GLFW_KEY_S) == GLFW_PRESS)
+    {
+        side = -MOVEMENT_SPEED;
+        segmentIdx = (SEGMENT_LIMIT * 2) / 5;
+    }
+
+
+    if (glfwGetKey(mGameWindow, GLFW_KEY_E) == GLFW_PRESS)
+    {
+        side = MOVEMENT_SPEED;
+        segmentIdx = (SEGMENT_LIMIT * 3) / 5;
+    }
+    if (glfwGetKey(mGameWindow, GLFW_KEY_D) == GLFW_PRESS)
+    {
+        side = -MOVEMENT_SPEED;
+        segmentIdx = (SEGMENT_LIMIT * 3) / 5;
+    }
+
+
+    if (glfwGetKey(mGameWindow, GLFW_KEY_R) == GLFW_PRESS)
+    {
+        side = MOVEMENT_SPEED;
+        segmentIdx = (SEGMENT_LIMIT * 4) / 5;
+    }
+    if (glfwGetKey(mGameWindow, GLFW_KEY_F) == GLFW_PRESS)
+    {
+        side = -MOVEMENT_SPEED;
+        segmentIdx = (SEGMENT_LIMIT * 4) / 5;
+    }
+
+
+    if (glfwGetKey(mGameWindow, GLFW_KEY_T) == GLFW_PRESS)
+    {
+        side = MOVEMENT_SPEED;
+        segmentIdx = (SEGMENT_LIMIT * 5) / 5;
+    }
+    if (glfwGetKey(mGameWindow, GLFW_KEY_G) == GLFW_PRESS)
+    {
+        side = -MOVEMENT_SPEED;
+        segmentIdx = (SEGMENT_LIMIT * 5) / 5;
+    }
+
+    btRigidBody* body = mSegments[--segmentIdx]->GetBody();
+    body->applyTorqueImpulse(body->getInvInertiaTensorWorld().inverse() * btVector3(upward, forward, side));
+    //mHead->GetBody()->applyCentralForce(mHead->GetBody()->getWorldTransform().getBasis()*moveVect*100);
 }
