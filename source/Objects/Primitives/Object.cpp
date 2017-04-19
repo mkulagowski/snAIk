@@ -179,6 +179,19 @@ void Object::Rotate(float degrees, btVector3 rotationAxis)
     }
 }
 
+btVector3 Object::GetRotation()
+{
+    if (mBody)
+    {
+        btTransform bulletRotation = mBody->getCenterOfMassTransform();
+        btQuaternion rot = bulletRotation.getRotation();
+
+        return btVector3(rot.x(), rot.y(), rot.z());
+    }
+
+    return btVector3(0, 0, 0);
+}
+
 void Object::Move(double distance, btVector3 direction)
 {
     btVector3 movement = direction * mVelocity;

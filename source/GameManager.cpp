@@ -8,13 +8,6 @@
 
 #include "GameManager.hpp"
 
-constexpr float SEGMENT_WEIGHT = SEGMENT_LIMIT != 0 ? TOTAL_WEIGHT / static_cast<float>(SEGMENT_LIMIT) : 0;
-constexpr float PI = 3.14159265358979323846f;
-constexpr float PI2 = PI / 2.0f;
-constexpr float PI4 = PI / 4.0f;
-constexpr float PI6 = PI / 6.0f;
-constexpr float PI12 = PI / 12.0f;
-
 SegmentObject* mHead = nullptr;
 
 GameManager::GameManager()
@@ -99,7 +92,8 @@ void GameManager::MainLoop()
     glfwSetWindowTitle(mGameWindow, titleStr.c_str());
     double deltaTime;
     mGameTimer.Start();
-
+    btVector3 torque;
+    std::string text;
     do
     {
         // Get frame interval
@@ -107,7 +101,10 @@ void GameManager::MainLoop()
         mGameTimer.Start();
 
         // Show score in windows title
-        glfwSetWindowTitle(mGameWindow, (titleStr + std::to_string(mHead->GetBody()->getLinearVelocity().length())).c_str());
+        //glfwSetWindowTitle(mGameWindow, (titleStr + std::to_string(mHead->GetBody()->getLinearVelocity().length())).c_str());
+        torque = mSnake->GetTorque(0);
+        text = titleStr + "[ " + std::to_string(torque.x()) + ", " + std::to_string(torque.y()) + ", " + std::to_string(torque.z()) + " ]";
+        glfwSetWindowTitle(mGameWindow, text.c_str());
 
         // Get players input
         GetPlayerInput(deltaTime);
@@ -143,43 +140,18 @@ void GameManager::CreateSnake()
     if (SEGMENT_LIMIT <= 0)
         return;
 
-    SegmentObject* bo;
+    mSnake = new Snake(SEGMENT_LIMIT, TOTAL_WEIGHT);
     for (int i = 0; i < SEGMENT_LIMIT; i++)
     {
-        bo = new SegmentObject(btVector3(1, 1, 1));
-        bo->Init(btVector3(0, 1, 0), SEGMENT_WEIGHT);
-        mRenderer.AddObject(bo);
-        bo->Move(i * 1.0f, btVector3(1, 0, 0));
-        mPhysics.AddObject(bo->GetBody());
-        bo->GetBody()->forceActivationState(DISABLE_DEACTIVATION);
-        mSegments.push_back(bo);
+        SegmentObject* segment = mSnake->GetSegment(i);
+        mRenderer.AddObject(segment);
+        mPhysics.AddObject(segment->GetBody());
+
+        if (i != (SEGMENT_LIMIT - 1))
+            mPhysics.GetWorld()->addConstraint(mSnake->GetConstraint(i), true);
     }
 
-    btConeTwistConstraint* coneC;
-    btTransform localA, localB;
-    btRigidBody *b1, *b2;
-    for (int i = 0; i < SEGMENT_LIMIT - 1; i++)
-    {
-        mSegments[i]->Move(2.0f, btVector3(0, 0, 1));
-        mSegments[i + 1]->Move(2.0f, btVector3(0, 0, 1));
-        b1 = mSegments[i]->GetBody();
-        b2 = mSegments[i + 1]->GetBody();
-
-        localA.setIdentity();
-        localB.setIdentity();
-
-        localA.getBasis().setEulerZYX(0, 0, PI2); localA.setOrigin(btVector3(0.f, 1.f, 0.f));
-        localB.getBasis().setEulerZYX(0, 0, PI2); localB.setOrigin(btVector3(0.f, -1.f, 0.f));
-
-        coneC = new btConeTwistConstraint(*b1, *b2, localA, localB);
-        coneC->setLimit(PI6, PI6, PI12,
-                        1.f, .15f, .5f);
-
-        mPhysics.GetWorld()->addConstraint(coneC, true);
-    }
-
-    mHead = mSegments[0];
-    mHead->SetColor(btVector3(1, 1, 0));
+    mHead = mSnake->GetHead();
 }
 
 void GameManager::GetPlayerInput(double deltaTime)
@@ -277,7 +249,6 @@ void GameManager::GetPlayerInput(double deltaTime)
         segmentIdx = (SEGMENT_LIMIT * 5) / 5;
     }
 
-    btRigidBody* body = mSegments[--segmentIdx]->GetBody();
-    body->applyTorqueImpulse(body->getInvInertiaTensorWorld().inverse() * btVector3(upward, forward, side));
-    //mHead->GetBody()->applyCentralForce(mHead->GetBody()->getWorldTransform().getBasis()*moveVect*100);
+    btVector3 torque(upward, forward, side);
+    mSnake->TurnSegment(--segmentIdx, torque);
 }

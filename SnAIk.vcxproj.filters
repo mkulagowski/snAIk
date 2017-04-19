@@ -63,6 +63,9 @@
     <ClCompile Include="source\Objects\SegmentObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
+    <ClCompile Include="source\Snake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Objects\Primitives\BoxObject.hpp">
@@ -97,6 +100,9 @@
     </ClInclude>
     <ClInclude Include="source\Objects\SegmentObject.hpp">
       <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="source\Snake.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

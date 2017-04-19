@@ -31,6 +31,7 @@
     <ClCompile Include="source\Objects\WallObject.cpp" />
     <ClCompile Include="source\Physics.cpp" />
     <ClCompile Include="source\Renderer.cpp" />
+    <ClCompile Include="source\Snake.cpp" />
     <ClCompile Include="source\snakeSolver.cpp" />
     <ClCompile Include="source\Timer.cpp" />
   </ItemGroup>
@@ -44,6 +45,7 @@
     <ClInclude Include="source\Objects\WallObject.hpp" />
     <ClInclude Include="source\Physics.hpp" />
     <ClInclude Include="source\Renderer.hpp" />
+    <ClInclude Include="source\Snake.hpp" />
     <ClInclude Include="source\snakeSolver.hpp" />
     <ClInclude Include="source\Timer.hpp" />
   </ItemGroup>

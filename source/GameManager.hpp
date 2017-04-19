@@ -6,6 +6,7 @@
 #include "Timer.hpp"
 #include "Physics.hpp"
 #include "Renderer.hpp"
+#include "Snake.hpp"
 #include "Objects/WallObject.hpp"
 #include "Objects/SegmentObject.hpp"
 
@@ -28,8 +29,7 @@ private:
     unsigned int mWidth, mHeight;
     unsigned int mScore;
 
-    std::vector<SegmentObject*> mSegments;
-
+    Snake* mSnake;
     GLFWwindow* mGameWindow;
     Timer mGameTimer;
     Renderer mRenderer;
