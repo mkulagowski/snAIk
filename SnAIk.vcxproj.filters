@@ -24,92 +24,95 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="source\Objects\Primitives\BoxObject.cpp">
-      <Filter>Source Files\Objects\Primitives</Filter>
+    <ClCompile Include="source\SnAIk\FileSystem.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Objects\Primitives\Object.cpp">
-      <Filter>Source Files\Objects\Primitives</Filter>
+    <ClCompile Include="source\SnAIk\GameManager.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Objects\Primitives\PlaneObject.cpp">
-      <Filter>Source Files\Objects\Primitives</Filter>
+    <ClCompile Include="source\SnAIk\main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="source\Objects\WallObject.cpp">
+    <ClCompile Include="source\SnAIk\Physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SnAIk\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SnAIk\Snake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SnAIk\snakeSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SnAIk\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SnAIk\Vector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SnAIk\Objects\SegmentObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="source\GameManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Physics.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Renderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\FileSystem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsLoader.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\snakeSolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="source\Objects\SegmentObject.cpp">
+    <ClCompile Include="source\SnAIk\Objects\WallObject.cpp">
       <Filter>Source Files\Objects</Filter>
     </ClCompile>
-    <ClCompile Include="source\Snake.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\SnAIk\Objects\Primitives\BoxObject.cpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SnAIk\Objects\Primitives\Object.cpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="source\SnAIk\Objects\Primitives\PlaneObject.cpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\Objects\Primitives\BoxObject.hpp">
-      <Filter>Source Files\Objects\Primitives</Filter>
+    <ClInclude Include="source\SnAIk\FileSystem.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Objects\Primitives\Object.hpp">
-      <Filter>Source Files\Objects\Primitives</Filter>
+    <ClInclude Include="source\SnAIk\GameManager.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Objects\Primitives\PlaneObject.hpp">
-      <Filter>Source Files\Objects\Primitives</Filter>
+    <ClInclude Include="source\SnAIk\Physics.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="source\Objects\WallObject.hpp">
+    <ClInclude Include="source\SnAIk\Renderer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SnAIk\Snake.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SnAIk\snakeSolver.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SnAIk\Timer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SnAIk\Vector.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SnAIk\Objects\SegmentObject.hpp">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="source\GameManager.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Physics.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Renderer.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Timer.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\FileSystem.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\snakeSolver.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="source\Objects\SegmentObject.hpp">
+    <ClInclude Include="source\SnAIk\Objects\WallObject.hpp">
       <Filter>Source Files\Objects</Filter>
     </ClInclude>
-    <ClInclude Include="source\Snake.hpp">
-      <Filter>Source Files</Filter>
+    <ClInclude Include="source\SnAIk\Objects\Primitives\BoxObject.hpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SnAIk\Objects\Primitives\Object.hpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SnAIk\Objects\Primitives\PlaneObject.hpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\Shaders\Main.fragmentshader">
+    <None Include="source\SnAIk\Shaders\Main.fragmentshader">
       <Filter>Source Files\Shaders</Filter>
     </None>
-    <None Include="source\Shaders\Main.vertexshader">
+    <None Include="source\SnAIk\Shaders\Main.vertexshader">
       <Filter>Source Files\Shaders</Filter>
     </None>
   </ItemGroup>

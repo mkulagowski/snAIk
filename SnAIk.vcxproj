@@ -17,41 +17,39 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="PhysicsLoader.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="source\FileSystem.cpp" />
-    <ClCompile Include="source\GameManager.cpp" />
-    <ClCompile Include="source\main.cpp" />
-    <ClCompile Include="source\Objects\SegmentObject.cpp" />
-    <ClCompile Include="source\Objects\Primitives\BoxObject.cpp" />
-    <ClCompile Include="source\Objects\Primitives\Object.cpp" />
-    <ClCompile Include="source\Objects\Primitives\PlaneObject.cpp" />
-    <ClCompile Include="source\Objects\WallObject.cpp" />
-    <ClCompile Include="source\Physics.cpp" />
-    <ClCompile Include="source\Renderer.cpp" />
-    <ClCompile Include="source\Snake.cpp" />
-    <ClCompile Include="source\snakeSolver.cpp" />
-    <ClCompile Include="source\Timer.cpp" />
+    <ClCompile Include="source\SnAIk\FileSystem.cpp" />
+    <ClCompile Include="source\SnAIk\GameManager.cpp" />
+    <ClCompile Include="source\SnAIk\main.cpp" />
+    <ClCompile Include="source\SnAIk\Objects\Primitives\BoxObject.cpp" />
+    <ClCompile Include="source\SnAIk\Objects\Primitives\Object.cpp" />
+    <ClCompile Include="source\SnAIk\Objects\Primitives\PlaneObject.cpp" />
+    <ClCompile Include="source\SnAIk\Objects\SegmentObject.cpp" />
+    <ClCompile Include="source\SnAIk\Objects\WallObject.cpp" />
+    <ClCompile Include="source\SnAIk\Physics.cpp" />
+    <ClCompile Include="source\SnAIk\Renderer.cpp" />
+    <ClCompile Include="source\SnAIk\Snake.cpp" />
+    <ClCompile Include="source\SnAIk\snakeSolver.cpp" />
+    <ClCompile Include="source\SnAIk\Timer.cpp" />
+    <ClCompile Include="source\SnAIk\Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="source\FileSystem.hpp" />
-    <ClInclude Include="source\GameManager.hpp" />
-    <ClInclude Include="source\Objects\SegmentObject.hpp" />
-    <ClInclude Include="source\Objects\Primitives\BoxObject.hpp" />
-    <ClInclude Include="source\Objects\Primitives\Object.hpp" />
-    <ClInclude Include="source\Objects\Primitives\PlaneObject.hpp" />
-    <ClInclude Include="source\Objects\WallObject.hpp" />
-    <ClInclude Include="source\Physics.hpp" />
-    <ClInclude Include="source\Renderer.hpp" />
-    <ClInclude Include="source\Snake.hpp" />
-    <ClInclude Include="source\snakeSolver.hpp" />
-    <ClInclude Include="source\Timer.hpp" />
+    <ClInclude Include="source\SnAIk\FileSystem.hpp" />
+    <ClInclude Include="source\SnAIk\GameManager.hpp" />
+    <ClInclude Include="source\SnAIk\Objects\Primitives\BoxObject.hpp" />
+    <ClInclude Include="source\SnAIk\Objects\Primitives\Object.hpp" />
+    <ClInclude Include="source\SnAIk\Objects\Primitives\PlaneObject.hpp" />
+    <ClInclude Include="source\SnAIk\Objects\SegmentObject.hpp" />
+    <ClInclude Include="source\SnAIk\Objects\WallObject.hpp" />
+    <ClInclude Include="source\SnAIk\Physics.hpp" />
+    <ClInclude Include="source\SnAIk\Renderer.hpp" />
+    <ClInclude Include="source\SnAIk\Snake.hpp" />
+    <ClInclude Include="source\SnAIk\snakeSolver.hpp" />
+    <ClInclude Include="source\SnAIk\Timer.hpp" />
+    <ClInclude Include="source\SnAIk\Vector.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="source\Shaders\Main.fragmentshader" />
-    <None Include="source\Shaders\Main.vertexshader" />
+    <None Include="source\SnAIk\Shaders\Main.fragmentshader" />
+    <None Include="source\SnAIk\Shaders\Main.vertexshader" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2A30954D-3D9A-4697-A264-A3B669825B95}</ProjectGuid>
@@ -87,22 +85,24 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\temp\</IntDir>
+    <IntDir>$(SolutionDir)Obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)Bin\$(Platform)\$(Configuration)\temp\</IntDir>
+    <IntDir>$(SolutionDir)Obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>external\glm-0.9.7.1;external\glew-1.13.0\include;external\bullet3-2.83.7\src;external\glfw\include</AdditionalIncludeDirectories>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\glm-0.9.7.1;$(SolutionDir)external\glew-1.13.0\include;$(SolutionDir)external\bullet3-2.83.7\src;$(SolutionDir)external\glfw\include</AdditionalIncludeDirectories>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>false</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;Bin\x64\Debug\glfw.lib;external\glew-1.13.0\lib\Release\x64\glew32.lib;external\glew-1.13.0\lib\Release\x64\glew32s.lib;external\bullet3-2.83.7\bin\BulletCollision_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\BulletDynamics_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\BulletSoftBody_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\LinearMath_vs2010_x64_release.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;glfw.lib;glew32.lib;glew32s.lib;BulletCollision_vs2010_x64_$(Configuration).lib;BulletDynamics_vs2010_x64_$(Configuration).lib;BulletSoftBody_vs2010_x64_$(Configuration).lib;LinearMath_vs2010_x64_$(Configuration).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)external\bullet3-2.83.7\bin\;$(SolutionDir)Bin\$(Platform)\$(Configuration)\;$(SolutionDir)external\glew-1.13.0\lib\Release\x64\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -112,15 +112,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>external\glm-0.9.7.1;external\glew-1.13.0\include;external\bullet3-2.83.7\src;external\glfw\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)external\glm-0.9.7.1;$(SolutionDir)external\glew-1.13.0\include;$(SolutionDir)external\bullet3-2.83.7\src;$(SolutionDir)external\glfw\include</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <DebugInformationFormat>None</DebugInformationFormat>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>glu32.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;Bin\x64\Release\glfw.lib;external\glew-1.13.0\lib\Release\x64\glew32.lib;external\glew-1.13.0\lib\Release\x64\glew32s.lib;external\bullet3-2.83.7\bin\BulletCollision_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\BulletDynamics_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\BulletSoftBody_vs2010_x64_release.lib;external\bullet3-2.83.7\bin\LinearMath_vs2010_x64_release.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glu32.lib;opengl32.lib;glfw.lib;glew32.lib;glew32s.lib;BulletCollision_vs2010_x64_$(Configuration).lib;BulletDynamics_vs2010_x64_$(Configuration).lib;BulletSoftBody_vs2010_x64_$(Configuration).lib;LinearMath_vs2010_x64_$(Configuration).lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>No</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(SolutionDir)external\bullet3-2.83.7\bin\;$(SolutionDir)Bin\$(Platform)\$(Configuration)\;$(SolutionDir)external\glew-1.13.0\lib\Release\x64\</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

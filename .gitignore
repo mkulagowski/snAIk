@@ -1,5 +1,6 @@
 # Output dir and files
 /Bin
+/Obj
 *.a
 *.so
 
