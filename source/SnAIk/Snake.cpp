@@ -25,7 +25,7 @@ Snake::Snake(unsigned int segmentsNo, float totalWeight)
         btVector3 segmentSize(1, 1, 1);
         mSegments.reserve(mSegmentsNo);
         mConstraints.reserve(mSegmentsNo);
-        for (int i = 0; i < mSegmentsNo; i++)
+        for (unsigned int i = 0; i < mSegmentsNo; i++)
         {
             mSegments.emplace_back(segmentSize);
             SegmentObject& segment = mSegments.back();
@@ -37,7 +37,7 @@ Snake::Snake(unsigned int segmentsNo, float totalWeight)
 
         btTransform localA, localB;
         btRigidBody *b1, *b2;
-        for (int i = 0; i < mSegmentsNo - 1; i++)
+        for (unsigned int i = 0; i < mSegmentsNo - 1; i++)
         {
             b1 = mSegments[i].GetBody();
             b2 = mSegments[i + 1].GetBody();
@@ -100,7 +100,7 @@ btVector3 Snake::GetAveragePosition()
     for (const auto& i : mSegments)
         result += i.GetPosition();
     
-    return result / mSegmentsNo;
+    return result / static_cast<btScalar>(mSegmentsNo);
 }
 
 btConeTwistConstraint * Snake::GetConstraint(unsigned int constraintIndex)

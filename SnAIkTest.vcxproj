@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\SnAIkTest\FileSystemTest.cpp" />
     <ClCompile Include="source\SnAIkTest\Main.cpp" />
     <ClCompile Include="source\SnAIkTest\TimerTest.cpp" />
     <ClCompile Include="source\SnAIk\FileSystem.cpp" />
@@ -33,7 +34,6 @@
     <ClCompile Include="source\SnAIk\Snake.cpp" />
     <ClCompile Include="source\SnAIk\snakeSolver.cpp" />
     <ClCompile Include="source\SnAIk\Timer.cpp" />
-    <ClCompile Include="source\SnAIk\Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SnAIk\FileSystem.hpp" />
@@ -48,7 +48,6 @@
     <ClInclude Include="source\SnAIk\Snake.hpp" />
     <ClInclude Include="source\SnAIk\snakeSolver.hpp" />
     <ClInclude Include="source\SnAIk\Timer.hpp" />
-    <ClInclude Include="source\SnAIk\Vector.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{31AB32DB-E9B4-4CE6-ABF7-9E1386306128}</ProjectGuid>

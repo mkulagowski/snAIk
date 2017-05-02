@@ -66,8 +66,8 @@
     <ClCompile Include="source\SnAIk\Timer.cpp">
       <Filter>Source Files\SnAIkFiles</Filter>
     </ClCompile>
-    <ClCompile Include="source\SnAIk\Vector.cpp">
-      <Filter>Source Files\SnAIkFiles</Filter>
+    <ClCompile Include="source\SnAIkTest\FileSystemTest.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -105,9 +105,6 @@
       <Filter>Source Files\SnAIkFiles</Filter>
     </ClInclude>
     <ClInclude Include="source\SnAIk\Timer.hpp">
-      <Filter>Source Files\SnAIkFiles</Filter>
-    </ClInclude>
-    <ClInclude Include="source\SnAIk\Vector.hpp">
       <Filter>Source Files\SnAIkFiles</Filter>
     </ClInclude>
   </ItemGroup>

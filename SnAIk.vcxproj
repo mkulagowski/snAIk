@@ -30,7 +30,6 @@
     <ClCompile Include="source\SnAIk\Snake.cpp" />
     <ClCompile Include="source\SnAIk\snakeSolver.cpp" />
     <ClCompile Include="source\SnAIk\Timer.cpp" />
-    <ClCompile Include="source\SnAIk\Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SnAIk\FileSystem.hpp" />
@@ -45,7 +44,6 @@
     <ClInclude Include="source\SnAIk\Snake.hpp" />
     <ClInclude Include="source\SnAIk\snakeSolver.hpp" />
     <ClInclude Include="source\SnAIk\Timer.hpp" />
-    <ClInclude Include="source\SnAIk\Vector.hpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="source\SnAIk\Shaders\Main.fragmentshader" />
