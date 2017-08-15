@@ -57,17 +57,17 @@ Snake::Snake(unsigned int segmentsNo, float totalWeight)
     }
 }
 
-int Snake::GetSegmentsNumber()
+int Snake::GetSegmentsNumber() const
 {
     return mSegmentsNo;
 }
 
-float Snake::GetTotalWeight()
+float Snake::GetTotalWeight() const
 {
     return mSegmentWeight * mSegmentsNo;
 }
 
-SegmentObject * Snake::GetSegment(unsigned int segmentIndex)
+const SegmentObject * Snake::GetSegment(unsigned int segmentIndex) const
 {
     if (segmentIndex >= mSegments.size())
         return nullptr;
@@ -75,26 +75,26 @@ SegmentObject * Snake::GetSegment(unsigned int segmentIndex)
     return &mSegments[segmentIndex];
 }
 
-SegmentObject * Snake::GetHead()
+const SegmentObject * Snake::GetHead() const
 {
     return GetSegment(0);
 }
 
-SegmentObject * Snake::GetTail()
+const SegmentObject * Snake::GetTail() const
 {
     return GetSegment(mSegmentsNo - 1);
 }
 
-btVector3 Snake::GetPosition(unsigned int segmentIndex)
+btVector3 Snake::GetPosition(unsigned int segmentIndex) const
 {
-    SegmentObject* obj = GetSegment(segmentIndex);
+    const SegmentObject* obj = GetSegment(segmentIndex);
     if (obj == nullptr)
-        return btVector3();
+        return btVector3(0, 0, 0);
 
     return obj->GetPosition();
 }
 
-btVector3 Snake::GetAveragePosition()
+btVector3 Snake::GetAveragePosition() const
 {
     btVector3 result(0, 0, 0);
     for (const auto& i : mSegments)
@@ -103,7 +103,7 @@ btVector3 Snake::GetAveragePosition()
     return result / static_cast<btScalar>(mSegmentsNo);
 }
 
-btConeTwistConstraint * Snake::GetConstraint(unsigned int constraintIndex)
+const btConeTwistConstraint * Snake::GetConstraint(unsigned int constraintIndex) const
 {
     if (constraintIndex >= mConstraints.size())
         return nullptr;
@@ -111,22 +111,29 @@ btConeTwistConstraint * Snake::GetConstraint(unsigned int constraintIndex)
     return &mConstraints[constraintIndex];
 }
 
+void Snake::AddConstraint(unsigned int constraintIndex, btDynamicsWorld* world)
+{
+    if (constraintIndex >= mConstraints.size())
+        return;
+
+    world->addConstraint(&mConstraints[constraintIndex], true);
+}
+
 bool Snake::TurnSegment(unsigned int segmentIndex, btVector3 torque)
 {
-    SegmentObject* obj = GetSegment(segmentIndex);
-    if (obj == nullptr)
+    if (segmentIndex >= mSegments.size())
         return false;
 
-    btRigidBody* body = obj->GetBody();
-    body->applyTorque(body->getInvInertiaTensorWorld().inverse() * torque * 100);
+    mSegments[segmentIndex].ApplyTorque(torque * 100);
+
     return true;
 }
 
-btVector3 Snake::GetTorque(unsigned int segmentIndex)
+btVector3 Snake::GetTorque(unsigned int segmentIndex) const
 {
-    SegmentObject* obj = GetSegment(segmentIndex);
+    const SegmentObject* obj = GetSegment(segmentIndex);
     if (obj == nullptr)
-        return btVector3();
+        return btVector3(0, 0, 0);
 
     return obj->GetRotation();
 }

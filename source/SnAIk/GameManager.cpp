@@ -8,11 +8,13 @@
 
 #include "GameManager.hpp"
 
-SegmentObject* mHead = nullptr;
+const SegmentObject* mHead = nullptr;
 
 GameManager::GameManager()
     : mWidth(1024)
     , mHeight(768)
+    , mHasInitialized(false)
+    , mPhysicsSteps(1)
 {
 }
 
@@ -30,59 +32,62 @@ GameManager& GameManager::GetInstance()
 
 bool GameManager::Init()
 {
-    // Initialize rand() function for asteroids randomization
-    srand(static_cast<unsigned int>(time(NULL)));
-
-    // Initialize glfw
-    if (!glfwInit())
+    if (!mHasInitialized)
     {
-        fprintf(stderr, "GAMEMANAGER: Failed to initialize GLFW\n");
-        return false;
+        // Initialize rand() function for asteroids randomization
+        srand(static_cast<unsigned int>(time(NULL)));
+
+        // Initialize glfw
+        if (!glfwInit())
+        {
+            fprintf(stderr, "GAMEMANAGER: Failed to initialize GLFW\n");
+            return false;
+        }
+
+        // Set up window
+        glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
+
+        // Create window
+        mGameWindow = glfwCreateWindow(mWidth, mHeight, "SnAIk", NULL, NULL);
+        if (mGameWindow == NULL)
+        {
+            fprintf(stderr, "GAMEMANAGER: Failed to open GLFW window. If you have an Intel GPU, they are not OGL3.3 compatible.\n");
+            return false;
+        }
+
+        // Create context for ogl
+        glfwMakeContextCurrent(mGameWindow);
+
+        // Enable players input
+        glfwSetInputMode(mGameWindow, GLFW_STICKY_KEYS, GL_TRUE);
+
+        // Initialize renderer and physics world
+        if (!mRenderer.Init())
+        {
+            fprintf(stderr, "GAMEMANAGER: Failed to initialize Renderer module.\n");
+            return false;
+        }
+
+        if (!mPhysics.Init())
+        {
+            fprintf(stderr, "GAMEMANAGER: Failed to initialize Physics module.\n");
+            glfwTerminate();
+            return false;
+        }
+
+        // Create floor
+        PlaneObject* floor = new PlaneObject(btVector3(0, 0, 1), 100.0f, 100.0f);
+        floor->Init(btVector3(1, 1, 1), 0.0f);
+        mRenderer.AddObject(floor);
+        mPhysics.AddObject(floor->GetBody());
+
+        // Create snake
+        CreateSnake();
+        mHasInitialized = true;
     }
-
-    // Set up window
-    glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
-
-    // Create window
-    mGameWindow = glfwCreateWindow(mWidth, mHeight, "SnAIk", NULL, NULL);
-    if (mGameWindow == NULL)
-    {
-        fprintf(stderr, "GAMEMANAGER: Failed to open GLFW window. If you have an Intel GPU, they are not OGL3.3 compatible.\n");
-        return false;
-    }
-
-    // Create context for ogl
-    glfwMakeContextCurrent(mGameWindow);
-
-    // Enable players input
-    glfwSetInputMode(mGameWindow, GLFW_STICKY_KEYS, GL_TRUE);
-
-    // Initialize renderer and physics world
-    if (!mRenderer.Init())
-    {
-        fprintf(stderr, "GAMEMANAGER: Failed to initialize Renderer module.\n");
-        return false;
-    }
-
-    if (!mPhysics.Init())
-    {
-        fprintf(stderr, "GAMEMANAGER: Failed to initialize Physics module.\n");
-        glfwTerminate();
-        return false;
-    }
-
-    // Create floor
-    PlaneObject* floor = new PlaneObject(btVector3(0, 0, 1), 100.0f, 100.0f);
-    floor->Init(btVector3(1, 1, 1), 0.0f);
-    mRenderer.AddObject(floor);
-    mPhysics.AddObject(floor->GetBody());
-
-    // Create snake
-    CreateSnake();
-
     return true;
 }
 
@@ -110,7 +115,7 @@ void GameManager::MainLoop()
         GetPlayerInput(deltaTime);
 
         // Update physics world and check for collisions
-        mPhysics.Update(deltaTime);
+        mPhysics.Update(mPhysicsSteps * deltaTime);
 
         // Draw all objects in renderer
         mRenderer.Draw();
@@ -143,12 +148,12 @@ void GameManager::CreateSnake()
     mSnake = new Snake(SEGMENT_LIMIT, TOTAL_WEIGHT);
     for (int i = 0; i < SEGMENT_LIMIT; i++)
     {
-        SegmentObject* segment = mSnake->GetSegment(i);
+        const SegmentObject* segment = mSnake->GetSegment(i);
         mRenderer.AddObject(segment);
         mPhysics.AddObject(segment->GetBody());
 
         if (i != (SEGMENT_LIMIT - 1))
-            mPhysics.GetWorld()->addConstraint(mSnake->GetConstraint(i), true);
+            mSnake->AddConstraint(i, mPhysics.GetWorld());
     }
 
     mHead = mSnake->GetHead();
@@ -156,39 +161,8 @@ void GameManager::CreateSnake()
 
 void GameManager::GetPlayerInput(double deltaTime)
 {
-    btVector3 moveVect(0,0,0);
     float side = 0, forward = 0, upward = 0;
     int segmentIdx = 1;
-
-    // Strafe right
-    if (glfwGetKey(mGameWindow, GLFW_KEY_RIGHT) == GLFW_PRESS)
-    {
-        moveVect.setX(-MOVEMENT_SPEED);
-    }
-
-    // Strafe left
-    if (glfwGetKey(mGameWindow, GLFW_KEY_LEFT) == GLFW_PRESS)
-    {
-        moveVect.setX(+MOVEMENT_SPEED);
-    }
-
-    // Strafe left
-    if (glfwGetKey(mGameWindow, GLFW_KEY_UP) == GLFW_PRESS)
-    {
-        moveVect.setZ(-MOVEMENT_SPEED);
-    }
-    // Strafe left
-    if (glfwGetKey(mGameWindow, GLFW_KEY_DOWN) == GLFW_PRESS)
-    {
-        moveVect.setZ(MOVEMENT_SPEED);
-    }
-
-    // Strafe left
-    if (glfwGetKey(mGameWindow, GLFW_KEY_SPACE) == GLFW_PRESS)
-    {
-        moveVect.setY(MOVEMENT_SPEED);
-    }
-
     
     if (glfwGetKey(mGameWindow, GLFW_KEY_Q) == GLFW_PRESS)
     {

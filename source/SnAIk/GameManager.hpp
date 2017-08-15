@@ -28,6 +28,8 @@ public:
 private:
     unsigned int mWidth, mHeight;
     unsigned int mScore;
+    unsigned int mPhysicsSteps;
+    bool mHasInitialized;
 
     Snake* mSnake;
     GLFWwindow* mGameWindow;

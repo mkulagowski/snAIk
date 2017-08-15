@@ -6,8 +6,8 @@
 
 #include "Objects/Primitives/Object.hpp"
 
-const std::string FSHADER_PATH = "source\\Shaders\\Main.fragmentshader";
-const std::string VSHADER_PATH = "source\\Shaders\\Main.vertexshader";
+const std::string FSHADER_PATH = "source\\SnAIk\\Shaders\\Main.fragmentshader";
+const std::string VSHADER_PATH = "source\\SnAIk\\Shaders\\Main.vertexshader";
 
 
 class Renderer

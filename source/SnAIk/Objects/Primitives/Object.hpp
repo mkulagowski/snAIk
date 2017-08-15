@@ -26,8 +26,11 @@ public:
     void SetColor(btVector3 color);
 
     void Move(double distance, btVector3 direction);
-    btVector3 GetRotation();
+    btVector3 GetRotation() const;
     void Rotate (float degrees, btVector3 rotationAxis);
+    void ApplyTorque(btVector3 torque);
+
+    const bool isMoveable() const;
 
 protected:
     GLuint mVertexArrayID, mNormalArrayID, mIndexArrayID;

@@ -10,16 +10,17 @@ public:
     ~Snake();
     Snake(unsigned int segmentsNo, float totalWeight);
 
-    int GetSegmentsNumber();
-    float GetTotalWeight();
-    SegmentObject* GetSegment(unsigned int segmentIndex);
-    SegmentObject* GetHead();
-    SegmentObject* GetTail();
-    btVector3 GetPosition(unsigned int segmentIndex);
-    btVector3 GetAveragePosition();
-    btVector3 GetTorque(unsigned int segmentIndex);
+    int GetSegmentsNumber() const;
+    float GetTotalWeight() const;
+    const SegmentObject* GetSegment(unsigned int segmentIndex) const;
+    const SegmentObject* GetHead() const;
+    const SegmentObject* GetTail() const;
+    btVector3 GetPosition(unsigned int segmentIndex) const;
+    btVector3 GetAveragePosition() const;
+    btVector3 GetTorque(unsigned int segmentIndex) const;
 
-    btConeTwistConstraint* GetConstraint(unsigned int constraintIndex);
+    const btConeTwistConstraint* GetConstraint(unsigned int constraintIndex) const;
+    void AddConstraint(unsigned int constraintIndex, btDynamicsWorld* world);
 
     bool TurnSegment(unsigned int segmentIndex, btVector3 torque);
 

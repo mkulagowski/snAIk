@@ -143,7 +143,7 @@ btVector3 Object::GetPosition() const
     if (mBody)
         return mBody->getWorldTransform().getOrigin();
 
-    return btVector3();
+    return btVector3(0,0,0);
 }
 
 void Object::SetColor(btVector3 color)
@@ -179,7 +179,7 @@ void Object::Rotate(float degrees, btVector3 rotationAxis)
     }
 }
 
-btVector3 Object::GetRotation()
+btVector3 Object::GetRotation() const
 {
     if (mBody)
     {
@@ -197,4 +197,18 @@ void Object::Move(double distance, btVector3 direction)
     btVector3 movement = direction * mVelocity;
     movement *= static_cast<btScalar>(distance);
     SetPosition(GetPosition() + movement);
+}
+
+const bool Object::isMoveable() const
+{
+    return mVelocity != 0.f;
+}
+
+void Object::ApplyTorque(btVector3 torque)
+{
+    if (mBody)
+    {
+        btVector3 invWorldTorque = mBody->getInvInertiaTensorWorld().inverse() * torque;
+        mBody->applyTorque(invWorldTorque);
+    }
 }
