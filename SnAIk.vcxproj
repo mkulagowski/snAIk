@@ -17,6 +17,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="source\SnAIk\API.cpp" />
     <ClCompile Include="source\SnAIk\FileSystem.cpp" />
     <ClCompile Include="source\SnAIk\GameManager.cpp" />
     <ClCompile Include="source\SnAIk\main.cpp" />
@@ -32,6 +33,7 @@
     <ClCompile Include="source\SnAIk\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\SnAIk\API.hpp" />
     <ClInclude Include="source\SnAIk\FileSystem.hpp" />
     <ClInclude Include="source\SnAIk\GameManager.hpp" />
     <ClInclude Include="source\SnAIk\Objects\Primitives\BoxObject.hpp" />

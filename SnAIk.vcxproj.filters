@@ -63,6 +63,9 @@
     <ClCompile Include="source\SnAIk\Objects\Primitives\PlaneObject.cpp">
       <Filter>Source Files\Objects\Primitives</Filter>
     </ClCompile>
+    <ClCompile Include="source\SnAIk\API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\SnAIk\FileSystem.hpp">
@@ -100,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="source\SnAIk\Objects\Primitives\PlaneObject.hpp">
       <Filter>Source Files\Objects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="source\SnAIk\API.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
