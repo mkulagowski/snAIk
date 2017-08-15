@@ -34,30 +34,33 @@ Object::~Object()
 
 void Object::Init(btVector3 color, float mass)
 {
-    // Generate and fill vertex buffer
-    glGenBuffers(1, &mVertexArrayID);
-    glBindBuffer(GL_ARRAY_BUFFER, mVertexArrayID);
-    glBufferData(GL_ARRAY_BUFFER, mVertexData.size() * sizeof(float),
-                 &mVertexData[0], GL_STATIC_DRAW);
+    if (!mInitDone)
+    {
+        // Generate and fill vertex buffer
+        glGenBuffers(1, &mVertexArrayID);
+        glBindBuffer(GL_ARRAY_BUFFER, mVertexArrayID);
+        glBufferData(GL_ARRAY_BUFFER, mVertexData.size() * sizeof(float),
+            &mVertexData[0], GL_STATIC_DRAW);
 
-    // Generate and fill normals buffer
-    glGenBuffers(1, &mNormalArrayID);
-    glBindBuffer(GL_ARRAY_BUFFER, mNormalArrayID);
-    glBufferData(GL_ARRAY_BUFFER, mNormalData.size() * sizeof(float),
-                 &mNormalData[0], GL_STATIC_DRAW);
+        // Generate and fill normals buffer
+        glGenBuffers(1, &mNormalArrayID);
+        glBindBuffer(GL_ARRAY_BUFFER, mNormalArrayID);
+        glBufferData(GL_ARRAY_BUFFER, mNormalData.size() * sizeof(float),
+            &mNormalData[0], GL_STATIC_DRAW);
 
-    // Generate and fill index buffer
-    glGenBuffers(1, &mIndexArrayID);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexArrayID);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 mIndices.size() * sizeof(unsigned short),
-                 &mIndices[0], GL_STATIC_DRAW);
+        // Generate and fill index buffer
+        glGenBuffers(1, &mIndexArrayID);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexArrayID);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+            mIndices.size() * sizeof(unsigned short),
+            &mIndices[0], GL_STATIC_DRAW);
 
-    // Set color and initialize objects physics
-    mColor = color;
-    InitPhysics(mass);
+        // Set color and initialize objects physics
+        mColor = color;
+        InitPhysics(mass);
 
-    mInitDone = true;
+        mInitDone = true;
+    }
 }
 
 void Object::InitPhysics(float mass)
@@ -148,7 +151,8 @@ btVector3 Object::GetPosition() const
 
 void Object::SetColor(btVector3 color)
 {
-    mColor = color;
+    if (mInitDone)
+        mColor = color;
 }
 
 btVector3 Object::GetColor() const
