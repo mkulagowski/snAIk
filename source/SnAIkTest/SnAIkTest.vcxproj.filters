@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIkTest\BoxObjectTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIkTest\FileSystemTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIkTest\Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIkTest\TimerTest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\Projects\ert\snAIk\source\SnAIkTest\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{843DAEC7-3726-392C-BC45-9A50AB075EC3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

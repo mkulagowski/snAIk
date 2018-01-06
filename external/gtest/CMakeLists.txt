@@ -1,0 +1,9 @@
+# @file
+# @author mkkulagowski
+# @brief  CMake for SnAIk project
+
+SET(GTEST_SOURCES src/gtest-all.cc)
+
+INCLUDE_DIRECTORIES(${SNAIKDEPS_GTEST_DIRECTORY} ${SNAIKDEPS_GTEST_INCLUDE_DIRECTORY})
+
+ADD_LIBRARY(gtest STATIC ${GTEST_SOURCES})

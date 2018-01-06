@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{4E6B610C-AF40-34DB-BDAE-D28FC00540C4}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\Apps\boost_1_65_1;E:\Apps\Python\Python36\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>E:\Apps\boost_1_65_1;E:\Apps\Python\Python36\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\Projects\ert\snAIk\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule E:/Projects/ert/snAIk/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+E:\Apps\CMake\bin\cmake.exe -HE:/Projects/ert/snAIk -BE:/Projects/ert/snAIk/cmakebin --check-stamp-file E:/Projects/ert/snAIk/cmakebin/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:/Projects/ert/snAIk/CMakeLists.txt;E:\Projects\ert\snAIk\CMakeLists.txt;E:\Projects\ert\snAIk\cmakebin\CMakeFiles\3.10.1\CMakeSystem.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeSystemSpecificInitialize.cmake;E:\Projects\ert\snAIk\cmakebin\CMakeFiles\3.10.1\CMakeCCompiler.cmake;E:\Projects\ert\snAIk\cmakebin\CMakeFiles\3.10.1\CMakeCXXCompiler.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeSystemSpecificInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeGenericSystem.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\WindowsPaths.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeCInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeLanguageInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC-C.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC.cmake;E:\Projects\ert\snAIk\cmakebin\CMakeFiles\3.10.1\CMakeRCCompiler.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeRCInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeCommonLanguageInclude.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeCXXInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeLanguageInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Compiler\MSVC-CXX.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC-CXX.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeCommonLanguageInclude.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPythonInterp.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPythonLibs.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeFindFrameworks.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\SelectLibraryConfigurations.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindBoost.cmake;E:\Projects\ert\snAIk\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">E:\Projects\ert\snAIk\cmakebin\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule E:/Projects/ert/snAIk/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+E:\Apps\CMake\bin\cmake.exe -HE:/Projects/ert/snAIk -BE:/Projects/ert/snAIk/cmakebin --check-stamp-file E:/Projects/ert/snAIk/cmakebin/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:/Projects/ert/snAIk/CMakeLists.txt;E:\Projects\ert\snAIk\CMakeLists.txt;E:\Projects\ert\snAIk\cmakebin\CMakeFiles\3.10.1\CMakeSystem.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeSystemSpecificInitialize.cmake;E:\Projects\ert\snAIk\cmakebin\CMakeFiles\3.10.1\CMakeCCompiler.cmake;E:\Projects\ert\snAIk\cmakebin\CMakeFiles\3.10.1\CMakeCXXCompiler.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeSystemSpecificInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeGenericSystem.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\WindowsPaths.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeCInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeLanguageInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC-C.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC.cmake;E:\Projects\ert\snAIk\cmakebin\CMakeFiles\3.10.1\CMakeRCCompiler.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeRCInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeCommonLanguageInclude.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeCXXInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeLanguageInformation.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Compiler\MSVC-CXX.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Compiler\CMakeCommonCompilerMacros.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC-CXX.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\Platform\Windows-MSVC.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeCommonLanguageInclude.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPythonInterp.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPythonLibs.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\CMakeFindFrameworks.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\SelectLibraryConfigurations.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPackageHandleStandardArgs.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindPackageMessage.cmake;E:\Apps\CMake\share\cmake-3.10\Modules\FindBoost.cmake;E:\Projects\ert\snAIk\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">E:\Projects\ert\snAIk\cmakebin\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:\Projects\ert\snAIk\cmakebin\ZERO_CHECK.vcxproj">
+      <Project>{22222788-13BC-3C67-8C21-F57C9813F657}</Project>
+      <Name>ZERO_CHECK</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\Projects\ert\snAIk\cmakebin\source\SnAIk\SnAIk.vcxproj">
+      <Project>{FA29DE5A-2E8E-3932-9EC7-5549323F6427}</Project>
+      <Name>SnAIk</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\Projects\ert\snAIk\cmakebin\source\SnAIkTest\SnAIkTest.vcxproj">
+      <Project>{BBD6821F-5A60-3ABA-847C-C47573DD09A9}</Project>
+      <Name>SnAIkTest</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\Projects\ert\snAIk\cmakebin\external\glfw\glfw.vcxproj">
+      <Project>{493EBE9A-009C-387D-83AB-F6DBE884A4B5}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\Projects\ert\snAIk\cmakebin\external\gtest\gtest.vcxproj">
+      <Project>{A716BC6F-EC10-34E4-8931-39E58019215E}</Project>
+      <Name>gtest</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

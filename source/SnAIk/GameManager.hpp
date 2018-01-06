@@ -19,7 +19,7 @@ class GameManager
 {
 public:
     static GameManager& GetInstance();
-    bool Init();
+	bool Init();
     void MainLoop();
 
     unsigned short GetWidth();

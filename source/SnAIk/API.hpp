@@ -9,28 +9,47 @@
 class API 
 {
 public:
+	using VectStruct = struct VectStruct
+	{
+		float x, y, z;
+		VectStruct(float xx, float yy, float zz)
+			: x(xx)
+			, y(yy)
+			, z(zz)
+		{};
+		VectStruct(btVector3 vect)
+			: x(vect.x())
+			, y(vect.y())
+			, z(vect.z())
+		{};
+		VectStruct() {};
+	};
+
+
     using SnakeMoveStruct = struct
     {
-        int mSegment;
+	public:
+		int mSegment;
         float mTorque;
-        btVector3 mDirection;
+		VectStruct mDirection;
     };
 
     using SegmentSnapshotStruct = struct SegmentSnapshotStruct
     {
-        btVector3 mRotation;
-        btVector3 mPosition;
-        SegmentSnapshotStruct(btVector3 rot, btVector3 pos)
+		VectStruct mRotation;
+		VectStruct mPosition;
+        SegmentSnapshotStruct(VectStruct rot, VectStruct pos)
             : mRotation(rot)
             , mPosition(pos)
         {};
+		SegmentSnapshotStruct(){};
     };
 
     using SnakeSnapshotStruct = struct
     {
         int mSegmentsNo;
         std::forward_list<SegmentSnapshotStruct> mSegments;
-        btVector3 mAveragePosition;
+		VectStruct mAveragePosition;
     };
 
     static API& getInstance();
@@ -43,6 +62,8 @@ public:
 
     const bool isMoveAvailable() const;
     const bool isSnakeAvailable() const;
+
+	void runSimulation() const;
 
 private:
     bool mIsMoveAvailable;

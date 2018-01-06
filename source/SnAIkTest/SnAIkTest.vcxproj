@@ -1,0 +1,192 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{EDE1606D-0FCC-306D-BC0A-64AEA6CD3FED}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>SnAIkTest</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Projects\ert\snAIk\Bin\x64\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">SnAIkTest.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">SnAIkTest</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Projects\ert\snAIk\Bin\x64\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">SnAIkTest.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">SnAIkTest</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>E:\Apps\boost_1_65_1;E:\Apps\Python\Python36\include;E:\Projects\ert\snAIk\source\SnAIk;E:\Projects\ert\snAIk\external\glm-0.9.7.1;E:\Projects\ert\snAIk\external\glew-1.13.0\include;E:\Projects\ert\snAIk\external\bullet3-2.83.7\src;E:\Projects\ert\snAIk\external\glfw\include;E:\Projects\ert\snAIk\external\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat></DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\Apps\boost_1_65_1;E:\Apps\Python\Python36\include;E:\Projects\ert\snAIk\source\SnAIk;E:\Projects\ert\snAIk\external\glm-0.9.7.1;E:\Projects\ert\snAIk\external\glew-1.13.0\include;E:\Projects\ert\snAIk\external\bullet3-2.83.7\src;E:\Projects\ert\snAIk\external\glfw\include;E:\Projects\ert\snAIk\external\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\Apps\boost_1_65_1;E:\Apps\Python\Python36\include;E:\Projects\ert\snAIk\source\SnAIk;E:\Projects\ert\snAIk\external\glm-0.9.7.1;E:\Projects\ert\snAIk\external\glew-1.13.0\include;E:\Projects\ert\snAIk\external\bullet3-2.83.7\src;E:\Projects\ert\snAIk\external\glfw\include;E:\Projects\ert\snAIk\external\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Boost\lib\boost_python-vc141-mt-s-1_65_1.lib;E:\Apps\Python\Python36\libs\python36.lib;glu32.lib;opengl32.lib;..\..\external\glfw\Release\glfw.lib;glew32.lib;glew32s.lib;BulletCollision_vs2010_x64_$(Configuration).lib;BulletDynamics_vs2010_x64_$(Configuration).lib;BulletSoftBody_vs2010_x64_$(Configuration).lib;LinearMath_vs2010_x64_$(Configuration).lib;..\..\external\gtest\Release\gtest.lib;C:\Boost\lib\boost_python-vc141-mt-s-1_65_1.lib;E:\Apps\Python\Python36\libs\python36.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:/Projects/ert/snAIk/external/glew-1.13.0/lib/Release/x64;E:/Projects/ert/snAIk/external/glew-1.13.0/lib/Release/x64/$(Configuration);E:/Projects/ert/snAIk/external/bullet3-2.83.7/bin;E:/Projects/ert/snAIk/external/bullet3-2.83.7/bin/$(Configuration);E:/Projects/ert/snAIk/Bin/x64;E:/Projects/ert/snAIk/Bin/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>E:/Projects/ert/snAIk/source/SnAIkTest/Release/SnAIkTest.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Projects/ert/snAIk/Bin/x64/Release/SnAIkTest.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>E:\Apps\boost_1_65_1;E:\Apps\Python\Python36\include;E:\Projects\ert\snAIk\source\SnAIk;E:\Projects\ert\snAIk\external\glm-0.9.7.1;E:\Projects\ert\snAIk\external\glew-1.13.0\include;E:\Projects\ert\snAIk\external\bullet3-2.83.7\src;E:\Projects\ert\snAIk\external\glfw\include;E:\Projects\ert\snAIk\external\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>E:\Apps\boost_1_65_1;E:\Apps\Python\Python36\include;E:\Projects\ert\snAIk\source\SnAIk;E:\Projects\ert\snAIk\external\glm-0.9.7.1;E:\Projects\ert\snAIk\external\glew-1.13.0\include;E:\Projects\ert\snAIk\external\bullet3-2.83.7\src;E:\Projects\ert\snAIk\external\glfw\include;E:\Projects\ert\snAIk\external\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>E:\Apps\boost_1_65_1;E:\Apps\Python\Python36\include;E:\Projects\ert\snAIk\source\SnAIk;E:\Projects\ert\snAIk\external\glm-0.9.7.1;E:\Projects\ert\snAIk\external\glew-1.13.0\include;E:\Projects\ert\snAIk\external\bullet3-2.83.7\src;E:\Projects\ert\snAIk\external\glfw\include;E:\Projects\ert\snAIk\external\gtest\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Boost\lib\boost_python-vc141-mt-sgd-1_65_1.lib;E:\Apps\Python\Python36\libs\python36.lib;glu32.lib;opengl32.lib;..\..\external\glfw\Debug\glfw.lib;glew32.lib;glew32s.lib;BulletCollision_vs2010_x64_$(Configuration).lib;BulletDynamics_vs2010_x64_$(Configuration).lib;BulletSoftBody_vs2010_x64_$(Configuration).lib;LinearMath_vs2010_x64_$(Configuration).lib;..\..\external\gtest\Debug\gtest.lib;C:\Boost\lib\boost_python-vc141-mt-sgd-1_65_1.lib;E:\Apps\Python\Python36\libs\python36.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>E:/Projects/ert/snAIk/external/glew-1.13.0/lib/Release/x64;E:/Projects/ert/snAIk/external/glew-1.13.0/lib/Release/x64/$(Configuration);E:/Projects/ert/snAIk/external/bullet3-2.83.7/bin;E:/Projects/ert/snAIk/external/bullet3-2.83.7/bin/$(Configuration);E:/Projects/ert/snAIk/Bin/x64;E:/Projects/ert/snAIk/Bin/x64/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>E:/Projects/ert/snAIk/source/SnAIkTest/Debug/SnAIkTest.lib</ImportLibrary>
+      <ProgramDataBaseFile>E:/Projects/ert/snAIk/Bin/x64/Debug/SnAIkTest.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\Projects\ert\snAIk\source\SnAIkTest\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule E:/Projects/ert/snAIk/source/SnAIkTest/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+E:\Apps\CMake\bin\cmake.exe -HE:/Projects/ert/snAIk -BE:/Projects/ert/snAIk --check-stamp-file E:/Projects/ert/snAIk/source/SnAIkTest/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:/Projects/ert/snAIk/source/SnAIkTest/CMakeLists.txt;E:\Projects\ert\snAIk\source\SnAIkTest\CMakeLists.txt;E:\Projects\ert\snAIk\source\SnAIkTest\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">E:\Projects\ert\snAIk\source\SnAIkTest\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule E:/Projects/ert/snAIk/source/SnAIkTest/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+E:\Apps\CMake\bin\cmake.exe -HE:/Projects/ert/snAIk -BE:/Projects/ert/snAIk --check-stamp-file E:/Projects/ert/snAIk/source/SnAIkTest/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:/Projects/ert/snAIk/source/SnAIkTest/CMakeLists.txt;E:\Projects\ert\snAIk\source\SnAIkTest\CMakeLists.txt;E:\Projects\ert\snAIk\source\SnAIkTest\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">E:\Projects\ert\snAIk\source\SnAIkTest\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIkTest\BoxObjectTest.cpp"  />
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIkTest\FileSystemTest.cpp"  />
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIkTest\Main.cpp"  />
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIkTest\TimerTest.cpp"  />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="E:\Projects\ert\snAIk\ZERO_CHECK.vcxproj">
+      <Project>{9655C101-9506-35D2-8F9F-754A4ED1B6CC}</Project>
+      <Name>ZERO_CHECK</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\Projects\ert\snAIk\external\glfw\glfw.vcxproj">
+      <Project>{FA497C90-F1E1-39E8-B4BF-B482B0C91BD2}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="E:\Projects\ert\snAIk\external\gtest\gtest.vcxproj">
+      <Project>{0C99AF81-6C3D-3E7D-A9BC-8BAC0727569E}</Project>
+      <Name>gtest</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -6,8 +6,8 @@
 
 #include "Objects/Primitives/Object.hpp"
 
-const std::string FSHADER_PATH = "source\\SnAIk\\Shaders\\Main.fragmentshader";
-const std::string VSHADER_PATH = "source\\SnAIk\\Shaders\\Main.vertexshader";
+const std::string FSHADER_PATH1 = "source\\SnAIk\\Shaders\\Main.fragmentshader";
+const std::string VSHADER_PATH1 = "source\\SnAIk\\Shaders\\Main.vertexshader";
 
 
 class Renderer
@@ -16,7 +16,7 @@ public:
     Renderer();
     ~Renderer();
 
-    bool Init();
+	bool Init();
 
     void Draw() const;
     void AddObject(const Object* obj);
@@ -31,5 +31,5 @@ private:
     GLuint mDummyVAO;
     std::forward_list<const Object*> mObjectList;
 
-    bool LoadShaders(std::string vertex, std::string fragment);
+	bool LoadShaders(std::string vertex, std::string fragment);
 };

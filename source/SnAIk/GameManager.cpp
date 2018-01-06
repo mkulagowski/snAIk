@@ -68,14 +68,14 @@ bool GameManager::Init()
         if (!mRenderer.Init())
         {
             fprintf(stderr, "GAMEMANAGER: Failed to initialize Renderer module.\n");
-            return false;
+			return false;
         }
 
         if (!mPhysics.Init())
         {
             fprintf(stderr, "GAMEMANAGER: Failed to initialize Physics module.\n");
             glfwTerminate();
-            return false;
+			return false;
         }
 
         // Create floor

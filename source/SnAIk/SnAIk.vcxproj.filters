@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\API.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\FileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\GameManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Physics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\PythonAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Snake.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Timer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\snakeSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\SegmentObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\WallObject.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\Primitives\BoxObject.cpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\Primitives\Object.cpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClCompile>
+    <ClCompile Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\Primitives\PlaneObject.cpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\API.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\FileSystem.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\GameManager.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Physics.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Renderer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Snake.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Timer.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\snakeSolver.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\SegmentObject.hpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\WallObject.hpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\Primitives\BoxObject.hpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\Primitives\Object.hpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClInclude>
+    <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\Primitives\PlaneObject.hpp">
+      <Filter>Source Files\Objects\Primitives</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="E:\Projects\ert\snAIk\source\SnAIk\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{E722C756-B97D-3D99-A323-6DA0A6708FA6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects\Primitives">
+      <UniqueIdentifier>{C0DA5EEE-087F-326B-8001-2414926DE019}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{35A8D920-C6EC-3EFC-9203-E0C5BD2462A1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

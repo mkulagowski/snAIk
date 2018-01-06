@@ -160,7 +160,7 @@ bool Renderer::LoadShaders(std::string vertex, std::string fragment)
     {
         fprintf(stderr, "RENDERER: Impossible to open shader file: \"%s\".\n",
                 vertex_file_path);
-        return false;
+		return false;
     }
 
 
@@ -183,9 +183,13 @@ bool Renderer::LoadShaders(std::string vertex, std::string fragment)
         std::vector<char> VertexShaderErrorMessage(InfoLogLength + 1);
         glGetShaderInfoLog(VertexShaderID, InfoLogLength, NULL,
                            &VertexShaderErrorMessage[0]);
-        if (!VertexShaderErrorMessage.empty())
-            fprintf(stderr, "RENDERER: Vertex shaders compilation errors:\n%s\n",
-                    &VertexShaderErrorMessage[0]);
+		if (!VertexShaderErrorMessage.empty())
+		{
+			fprintf(stderr, "RENDERER: Vertex shaders compilation errors:\n%s\n",
+				&VertexShaderErrorMessage[0]);
+			return false;
+		}
+			
     }
 
 
@@ -204,9 +208,12 @@ bool Renderer::LoadShaders(std::string vertex, std::string fragment)
         std::vector<char> FragmentShaderErrorMessage(InfoLogLength + 1);
         glGetShaderInfoLog(FragmentShaderID, InfoLogLength, NULL,
                            &FragmentShaderErrorMessage[0]);
-        if (!FragmentShaderErrorMessage.empty())
-            fprintf(stderr, "RENDERER: Vertex shaders compilation errors:\n%s\n",
-                    &FragmentShaderErrorMessage[0]);
+		if (!FragmentShaderErrorMessage.empty())
+		{
+			fprintf(stderr, "RENDERER: Vertex shaders compilation errors:\n%s\n",
+				&FragmentShaderErrorMessage[0]);
+			return false;
+		}
     }
 
 
@@ -226,9 +233,12 @@ bool Renderer::LoadShaders(std::string vertex, std::string fragment)
     {
         std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
         glGetProgramInfoLog(mProgram, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-        if (!ProgramErrorMessage.empty())
-            fprintf(stderr, "RENDERER: Shaders linking errors:\n%s\n",
-                    &ProgramErrorMessage[0]);
+		if (!ProgramErrorMessage.empty())
+		{
+			fprintf(stderr, "RENDERER: Shaders linking errors:\n%s\n",
+				&ProgramErrorMessage[0]);
+			return false;
+		}
     }
 
     // Clean up

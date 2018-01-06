@@ -1,0 +1,9 @@
+# @file
+# @author mkkulagowski
+# @brief  CMake for SnAIk project
+
+FILE(GLOB GLFW_SOURCES src/*.c)
+FILE(GLOB GLFW_HEADERS src/*.h)
+
+ADD_LIBRARY(glfw STATIC ${GLFW_SOURCES} ${GLFW_HEADERS})
+ADD_DEFINITIONS(-D_MBCS -D_GLFW_USE_CONFIG_H -D_CRT_SECURE_NO_WARNINGS)

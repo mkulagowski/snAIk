@@ -1,18 +1,23 @@
 # Output dir and files
-/Bin
-/Obj
+Bin/
+Obj/
 *.a
 *.so
 
-# Visual Studio Performance Analysis Results
+# Visual Studio Stuff
 *.vsp
 *.psess
-
-# Other useless folders and file patterns
 *.opensdf
 *.opendb
 *.sdf
 *.suo
+*.vcx
 *.vcxproj.user
 *.VC.db
 /.vs
+
+# CMake stuff
+cmakebin/
+CMakeFiles/
+*.cmake
+CMakeCache.txt

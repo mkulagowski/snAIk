@@ -1,4 +1,6 @@
 #include "API.hpp"
+#include "FileSystem.hpp"
+#include "GameManager.hpp"
 
 API& API::getInstance()
 {
@@ -68,4 +70,15 @@ const bool API::isMoveAvailable() const
 const bool API::isSnakeAvailable() const
 {
     return mIsSnakeAvailable;
+}
+
+void API::runSimulation() const
+{
+	// Navigate to project root directory
+	FileSystem::ChangeDirectory(FileSystem::GetExecutableDir() + "/../../..");
+
+	// Start main loop
+	if (GameManager::GetInstance().Init()) {
+		GameManager::GetInstance().MainLoop();
+	}
 }
