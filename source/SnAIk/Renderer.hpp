@@ -20,6 +20,7 @@ public:
 
     void Draw() const;
     void AddObject(const Object* obj);
+	void RemoveAllByTag(const uint8_t& tag);
 
 private:
     GLint mProgram;

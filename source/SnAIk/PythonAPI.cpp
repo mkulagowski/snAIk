@@ -2,8 +2,8 @@
 
 #define BOOST_PYTHON_STATIC_LIB
 #include "API.hpp"
-#include <forward_list>
 #include "boost/python.hpp"
+#include "boost/python/suite/indexing/vector_indexing_suite.hpp"
 
 using SnakeMove = API::SnakeMoveStruct;
 using SnakeSnapshot = API::SnakeSnapshotStruct;
@@ -17,32 +17,6 @@ struct NullDeleter
 
 namespace boost {
 	namespace python {
-		// to-python convert for SegmentSnapshot
-		struct SegmentSnapshot_to_tuple
-		{
-			static PyObject* convert(SegmentSnapshot const& s)
-			{
-				return incref(object(make_tuple(s.mRotation, s.mPosition)).ptr());
-			}
-		};
-
-		// to-python convert for SegmentSnapshot
-		struct SnakeSnapshot_to_tuple
-		{
-			static PyObject* convert(SnakeSnapshot const& s)
-			{
-				return incref(object(make_tuple(s.mSegmentsNo, s.mSegments, s.mAveragePosition)).ptr());
-			}
-		};
-
-		static list toList(std::forward_list<SegmentSnapshot> const& self)
-		{
-			list t;
-			for (auto it = self.begin(); it != self.end(); ++it)
-				t.append(*it);
-			return t;
-		}
-
 		static std::shared_ptr<API> getSharedAPIInstance()
 		{
 			return std::shared_ptr<API>(&API::getInstance(), NullDeleter());
@@ -68,16 +42,16 @@ namespace boost {
 				.def_readwrite("torque", &SnakeMove::mTorque)
 				.def_readwrite("direction", &SnakeMove::mDirection)
 				;
-			
+
 			class_<SnakeSnapshot>("SnakeSnapshot")
-				.def_readonly("segmentsNo", &SnakeSnapshot::mSegmentsNo)
-				.def_readonly("segments", &SnakeSnapshot::mSegments)
-				.def_readonly("averagePosition", &SnakeSnapshot::mAveragePosition)
+				.def_readwrite("segmentsNo", &SnakeSnapshot::mSegmentsNo)
+				.def_readwrite("segments", &SnakeSnapshot::mSegments)
+				.def_readwrite("averagePosition", &SnakeSnapshot::mAveragePosition)
 				;
 
 			class_<SegmentSnapshot>("SegmentSnapshot")
-				.def_readonly("rotation", &SegmentSnapshot::mRotation)
-				.def_readonly("position", &SegmentSnapshot::mPosition)
+				.def_readwrite("rotation", &SegmentSnapshot::mRotation)
+				.def_readwrite("position", &SegmentSnapshot::mPosition)
 				;
 
 			class_<VectStruct>("VectStruct")
@@ -85,10 +59,10 @@ namespace boost {
 				.def_readwrite("y", &VectStruct::y)
 				.def_readwrite("z", &VectStruct::z)
 				;
-			
-			def("toList", toList, "convert std::forward_list<SegmentSnapshot> to python list");
-			to_python_converter<SegmentSnapshot, SegmentSnapshot_to_tuple>();
-			to_python_converter<SnakeSnapshot, SnakeSnapshot_to_tuple>();
+
+			class_<API::SegmentList>("SegmentList")
+				.def(vector_indexing_suite<API::SegmentList>())
+				;
 		}
 
 	} // namespace boost::python

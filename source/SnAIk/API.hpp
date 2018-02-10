@@ -3,7 +3,7 @@
 #include "Snake.hpp"
 #include "Objects/SegmentObject.hpp"
 #include <mutex>
-#include <forward_list>
+#include <vector>
 #include <btBulletDynamicsCommon.h>
 
 class API 
@@ -23,8 +23,11 @@ public:
 			, z(vect.z())
 		{};
 		VectStruct() {};
+		bool operator==(const VectStruct& rhs)
+		{
+			return x == rhs.x && y == rhs.y && z == rhs.z;
+		}
 	};
-
 
     using SnakeMoveStruct = struct
     {
@@ -43,12 +46,17 @@ public:
             , mPosition(pos)
         {};
 		SegmentSnapshotStruct(){};
+		bool operator==(const SegmentSnapshotStruct& rhs)
+		{
+			return mRotation == rhs.mRotation && mPosition == rhs.mPosition;
+		}
     };
 
+	using SegmentList = std::vector<SegmentSnapshotStruct>;
     using SnakeSnapshotStruct = struct
     {
         int mSegmentsNo;
-        std::forward_list<SegmentSnapshotStruct> mSegments;
+		SegmentList mSegments;
 		VectStruct mAveragePosition;
     };
 
@@ -58,12 +66,12 @@ public:
     void setMove(const SnakeMoveStruct& move);
 
     SnakeSnapshotStruct getSnake();
-    void setSnake(const Snake& snake);
+    void setSnake(const Snake* snake);
 
     const bool isMoveAvailable() const;
     const bool isSnakeAvailable() const;
 
-	void runSimulation() const;
+	void runSimulation(int loopsNumber = 0, bool draw = true) const;
 
 private:
     bool mIsMoveAvailable;

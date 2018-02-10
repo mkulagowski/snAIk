@@ -21,6 +21,7 @@ public:
 
     const btConeTwistConstraint* GetConstraint(unsigned int constraintIndex) const;
     void AddConstraint(unsigned int constraintIndex, btDynamicsWorld* world);
+	void RemoveAllConstraints(btDynamicsWorld* world);
 
     bool TurnSegment(unsigned int segmentIndex, btVector3 torque);
 

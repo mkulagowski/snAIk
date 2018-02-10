@@ -33,6 +33,7 @@ Snake::Snake(unsigned int segmentsNo, float totalWeight)
             segment.Move(i * 1.f, btVector3(1, 0, 0));
             segment.Move(1.f, btVector3(0, 0, 1));
             segment.GetBody()->forceActivationState(DISABLE_DEACTIVATION);
+			segment.GetBody()->setAnisotropicFriction(btVector3(3, 4, 0));
         }
 
         btTransform localA, localB;
@@ -45,8 +46,11 @@ Snake::Snake(unsigned int segmentsNo, float totalWeight)
             localA.setIdentity();
             localB.setIdentity();
 
-            localA.getBasis().setEulerZYX(0, 0, PI2); localA.setOrigin(btVector3(0.f, 1.f, 0.f));
-            localB.getBasis().setEulerZYX(0, 0, PI2); localB.setOrigin(btVector3(0.f, -1.f, 0.f));
+            localA.getBasis().setEulerZYX(0, 0, PI2);
+			localA.setOrigin(btVector3(0.f, 1.f, 0.f));
+
+            localB.getBasis().setEulerZYX(0, 0, PI2);
+			localB.setOrigin(btVector3(0.f, -1.f, 0.f));
 
             mConstraints.emplace_back(*b1, *b2, localA, localB);
             mConstraints.back().setLimit(PI6, PI6, PI12,
@@ -117,6 +121,12 @@ void Snake::AddConstraint(unsigned int constraintIndex, btDynamicsWorld* world)
         return;
 
     world->addConstraint(&mConstraints[constraintIndex], true);
+}
+
+void Snake::RemoveAllConstraints(btDynamicsWorld* world)
+{
+	for (auto& i : mConstraints)
+		world->removeConstraint(&i);
 }
 
 bool Snake::TurnSegment(unsigned int segmentIndex, btVector3 torque)

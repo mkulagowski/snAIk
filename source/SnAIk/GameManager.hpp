@@ -2,11 +2,13 @@
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <memory>
 
 #include "Timer.hpp"
 #include "Physics.hpp"
 #include "Renderer.hpp"
 #include "Snake.hpp"
+#include "API.hpp"
 #include "Objects/WallObject.hpp"
 #include "Objects/SegmentObject.hpp"
 
@@ -20,10 +22,11 @@ class GameManager
 public:
     static GameManager& GetInstance();
 	bool Init();
-    void MainLoop();
+    void MainLoop(int loopsNumber = 0, bool draw = true);
 
-    unsigned short GetWidth();
-    unsigned short GetHeight();
+    const unsigned short GetWidth() const;
+    const unsigned short GetHeight() const;
+	void SetPhysicsSteps(unsigned int steps);
 
 private:
     unsigned int mWidth, mHeight;
@@ -31,8 +34,9 @@ private:
     unsigned int mPhysicsSteps;
     bool mHasInitialized;
 
-    Snake* mSnake;
-    GLFWwindow* mGameWindow;
+    std::unique_ptr<Snake> mSnake;
+	API* mAPI;
+	GLFWwindow* mGameWindow;
     Timer mGameTimer;
     Renderer mRenderer;
     Physics mPhysics;

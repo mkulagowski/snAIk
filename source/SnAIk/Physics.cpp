@@ -51,7 +51,7 @@ void Physics::RemoveObject(btRigidBody* object)
 // This function should be as fast as possible, so there is no pointer check!
 void Physics::Update(double deltaTime)
 {
-    mDynamicsWorld->stepSimulation(static_cast<btScalar>(deltaTime));// , 7);
+    mDynamicsWorld->stepSimulation(static_cast<btScalar>(deltaTime), 10);// , 7);
 }
 
 btDynamicsWorld* Physics::GetWorld()

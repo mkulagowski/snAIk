@@ -12,6 +12,8 @@ API::API()
     : mIsMoveAvailable(false)
     , mIsSnakeAvailable(false)
 {
+	// Navigate to project root directory
+	FileSystem::ChangeDirectory(FileSystem::GetExecutableDir() + "/../../..");
 }
 
 API::~API()
@@ -45,19 +47,19 @@ API::SnakeSnapshotStruct API::getSnake()
         mIsSnakeAvailable = false;
         return mSnake;
     }
-    return SnakeSnapshotStruct();
+	return SnakeSnapshotStruct();
 }
 
-void API::setSnake(const Snake& snake)
+void API::setSnake(const Snake* snake)
 {
     std::lock_guard<std::mutex> lock(mSnakeMutex);
-    mSnake.mSegmentsNo = snake.GetSegmentsNumber();
+    mSnake.mSegmentsNo = snake->GetSegmentsNumber();
     mSnake.mSegments.clear();
-    for (int i = mSnake.mSegmentsNo - 1; i >= 0; i--)
+    for (int i = 0; i < mSnake.mSegmentsNo; ++i)
     {
-        btVector3 rot = snake.GetTorque(i);
-        btVector3 pos = snake.GetPosition(i);
-        mSnake.mSegments.push_front(SegmentSnapshotStruct(rot, pos));
+        btVector3 rot = snake->GetTorque(i);
+        btVector3 pos = snake->GetPosition(i);
+        mSnake.mSegments.push_back(SegmentSnapshotStruct(rot, pos));
     }
     mIsSnakeAvailable = true;
 }
@@ -72,13 +74,10 @@ const bool API::isSnakeAvailable() const
     return mIsSnakeAvailable;
 }
 
-void API::runSimulation() const
+void API::runSimulation(int loopsNumber, bool draw) const
 {
-	// Navigate to project root directory
-	FileSystem::ChangeDirectory(FileSystem::GetExecutableDir() + "/../../..");
-
 	// Start main loop
 	if (GameManager::GetInstance().Init()) {
-		GameManager::GetInstance().MainLoop();
+		GameManager::GetInstance().MainLoop(loopsNumber, draw);
 	}
 }

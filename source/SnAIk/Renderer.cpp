@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <algorithm>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -121,6 +122,16 @@ void Renderer::AddObject(const Object * obj)
     mObjectList.push_front(obj);
 }
 
+void Renderer::RemoveAllByTag(const uint8_t& tag)
+{
+	auto iterator = std::remove_if(mObjectList.begin(), mObjectList.end(),
+		[&tag](const Object* obj) -> bool
+		{
+			return obj->getTag() == tag;
+		}
+	);
+	mObjectList.erase_after(iterator, mObjectList.end());
+}
 
 bool Renderer::LoadShaders(std::string vertex, std::string fragment)
 {

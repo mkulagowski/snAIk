@@ -14,7 +14,6 @@ static const double mPeriod = GetCounterPeriod();
 
 }
 
-
 Timer::Timer()
 {
     mStart.QuadPart = 0;

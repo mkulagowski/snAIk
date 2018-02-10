@@ -10,6 +10,7 @@ Object::Object()
     , mInitDone(false)
     , mShape(nullptr)
     , mBody(nullptr)
+	, mTag(0)
 {
 }
 
@@ -84,7 +85,7 @@ void Object::InitPhysics(float mass)
     if (mass > 0)
     {
         mBody->setAngularFactor(btVector3(1, 0, 1));
-        mBody->setAnisotropicFriction(btVector3(2, 1, 2));
+        mBody->setAnisotropicFriction(btVector3(1, 1, 1));
     }
 
     // Set rigid bodys pointer to this Object
@@ -215,4 +216,9 @@ void Object::ApplyTorque(btVector3 torque)
         btVector3 invWorldTorque = mBody->getInvInertiaTensorWorld().inverse() * torque;
         mBody->applyTorque(invWorldTorque);
     }
+}
+
+const uint8_t Object::getTag() const
+{
+	return mTag;
 }

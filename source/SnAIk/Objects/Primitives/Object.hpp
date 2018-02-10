@@ -31,6 +31,7 @@ public:
     void ApplyTorque(btVector3 torque);
 
     const bool isMoveable() const;
+	const uint8_t getTag() const;
 
 protected:
     GLuint mVertexArrayID, mNormalArrayID, mIndexArrayID;
@@ -44,6 +45,7 @@ protected:
     float mVelocity;
     btVector3 mColor;
     bool mInitDone;
+	uint8_t mTag;
 
     virtual void AddShape() = 0;
     void InitPhysics(float mass);

@@ -14,7 +14,8 @@ GameManager::GameManager()
     : mWidth(1024)
     , mHeight(768)
     , mHasInitialized(false)
-    , mPhysicsSteps(1)
+    , mPhysicsSteps(10)
+	, mAPI(&API::getInstance())
 {
 }
 
@@ -85,67 +86,103 @@ bool GameManager::Init()
         mPhysics.AddObject(floor->GetBody());
 
         // Create snake
-        CreateSnake();
+        //CreateSnake();
         mHasInitialized = true;
     }
     return true;
 }
 
-void GameManager::MainLoop()
+void GameManager::MainLoop(int loopsNumber, bool draw)
 {
+	CreateSnake();
     std::string titleStr = "SnAIk head velocity = ";
     glfwSetWindowTitle(mGameWindow, titleStr.c_str());
     double deltaTime;
     mGameTimer.Start();
     btVector3 torque;
     std::string text;
-    do
-    {
-        // Get frame interval
-        deltaTime = mGameTimer.Stop();
-        mGameTimer.Start();
 
-        // Show score in windows title
-        //glfwSetWindowTitle(mGameWindow, (titleStr + std::to_string(mHead->GetBody()->getLinearVelocity().length())).c_str());
-        torque = mSnake->GetTorque(0);
-        text = titleStr + "[ " + std::to_string(torque.x()) + ", " + std::to_string(torque.y()) + ", " + std::to_string(torque.z()) + " ]";
-        glfwSetWindowTitle(mGameWindow, text.c_str());
+	// Loop management variables
+	loopsNumber = loopsNumber > 0 ? loopsNumber: 0;
+	const int changeVal = loopsNumber > 0 ? 1 : 0;
+	int counter = 0;
 
-        // Get players input
-        GetPlayerInput(deltaTime);
+	do
+	{
+		// Get frame interval
+		deltaTime = mGameTimer.Stop();
+		mGameTimer.Start();
 
-        // Update physics world and check for collisions
-        mPhysics.Update(mPhysicsSteps * deltaTime);
+		// Show score in windows title
+		//glfwSetWindowTitle(mGameWindow, (titleStr + std::to_string(mHead->GetBody()->getLinearVelocity().length())).c_str());
+		torque = mSnake->GetTorque(0);
+		text = titleStr + "[ " + std::to_string(torque.x()) + ", " + std::to_string(torque.y()) + ", " + std::to_string(torque.z()) + " ]";
+		glfwSetWindowTitle(mGameWindow, text.c_str());
 
-        // Draw all objects in renderer
-        mRenderer.Draw();
+		// Get players input
+		if (draw)
+			GetPlayerInput(deltaTime);
 
-        // Swap buffers and check events
-        glfwSwapBuffers(mGameWindow);
-        glfwPollEvents();
+		// Update physics world and check for collisions
+		mPhysics.Update(mPhysicsSteps * deltaTime);
 
-    } // Check if the ESC key was pressed or the window was closed
-    while (glfwGetKey(mGameWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-           glfwWindowShouldClose(mGameWindow) == 0);
+		if (draw)
+		{
+			// Draw all objects in renderer
+			mRenderer.Draw();
+
+			// Swap buffers and check events
+			glfwSwapBuffers(mGameWindow);
+			glfwPollEvents();
+		}
+
+		mAPI->setSnake(mSnake.get());
+		if (mAPI->isMoveAvailable())
+		{
+			API::SnakeMoveStruct move = mAPI->getMove();
+			btVector3 direction(move.mDirection.x, move.mDirection.y, move.mDirection.z);
+			mSnake->TurnSegment(move.mSegment, direction * move.mTorque);
+		}
+
+		counter += changeVal;
+		if (counter > loopsNumber)
+			break;
+
+	} // Check if the ESC key was pressed or the window was closed
+	while (glfwGetKey(mGameWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
+		glfwWindowShouldClose(mGameWindow) == 0);
 }
 
 
-unsigned short GameManager::GetWidth()
+const unsigned short GameManager::GetWidth() const
 {
     return mWidth;
 }
 
-unsigned short GameManager::GetHeight()
+const unsigned short GameManager::GetHeight() const
 {
     return mHeight;
 }
 
 void GameManager::CreateSnake()
 {
-    if (SEGMENT_LIMIT <= 0)
-        return;
+	if (SEGMENT_LIMIT <= 0)
+		return;
 
-    mSnake = new Snake(SEGMENT_LIMIT, TOTAL_WEIGHT);
+	if (mSnake)
+	{
+		int limit = mSnake->GetSegmentsNumber();
+		for (int i = 0; i < limit; ++i)
+		{
+			const SegmentObject* segment = mSnake->GetSegment(i);
+			mPhysics.RemoveObject(segment->GetBody());
+		}
+		mSnake->RemoveAllConstraints(mPhysics.GetWorld());
+		mRenderer.RemoveAllByTag(SNAKE_TAG);
+		mHead = nullptr;
+	}
+
+    mSnake = std::make_unique<Snake>(SEGMENT_LIMIT, TOTAL_WEIGHT);
     for (int i = 0; i < SEGMENT_LIMIT; i++)
     {
         const SegmentObject* segment = mSnake->GetSegment(i);
@@ -225,4 +262,10 @@ void GameManager::GetPlayerInput(double deltaTime)
 
     btVector3 torque(upward, forward, side);
     mSnake->TurnSegment(--segmentIdx, torque);
+}
+
+void GameManager::SetPhysicsSteps(unsigned int steps)
+{
+	if (steps > 0)
+		mPhysicsSteps = steps;
 }

@@ -524,29 +524,25 @@ btScalar snakeSolver::restitutionCurve(btScalar rel_vel, btScalar restitution)
 // MKK: Changes introduced in here!
 void	snakeSolver::applyAnisotropicFriction(btCollisionObject* colObj, btVector3& frictionDirection, int frictionMode)
 {
-
-
     if (colObj && colObj->hasAnisotropicFriction(frictionMode))
     {
-        
         // transform to local coordinates
         btVector3 loc_lateral = frictionDirection * colObj->getWorldTransform().getBasis();
 
-        const btVector3& friction_scaling = colObj->getAnisotropicFriction();
-        //apply anisotropic friction
-        loc_lateral *= friction_scaling;
+        btVector3 friction_scaling = colObj->getAnisotropicFriction();
+        
+		// Make friction lesser, when going forward
+		if (loc_lateral.y() < 0 && friction_scaling.y() != 0)
+			friction_scaling.setY(1);// / friction_scaling.y());
 
-        // Make friction much greater, when going backwards
-        if (loc_lateral.y() > 0)
-            loc_lateral.setY(loc_lateral.y() * 4.0f);
+		//apply anisotropic friction
+        loc_lateral *= friction_scaling;
 
         // ... and transform it back to global coordinates
         frictionDirection = colObj->getWorldTransform().getBasis() * loc_lateral;
     }
 
 }
-
-
 
 
 void snakeSolver::setupFrictionConstraint(btSolverConstraint& solverConstraint, const btVector3& normalAxis, int  solverBodyIdA, int solverBodyIdB, btManifoldPoint& cp, const btVector3& rel_pos1, const btVector3& rel_pos2, btCollisionObject* colObj0, btCollisionObject* colObj1, btScalar relaxation, btScalar desiredVelocity, btScalar cfmSlip)
