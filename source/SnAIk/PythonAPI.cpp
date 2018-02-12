@@ -35,6 +35,8 @@ namespace boost {
 				.def("isMoveAvailable", &API::isMoveAvailable)
 				.def("isSnakeAvailable", &API::isSnakeAvailable)
 				.def("runSimulation", &API::runSimulation)
+				.def("initSim", &API::initSim)
+				.def("step", &API::step)
 				;
 
 			class_<SnakeMove>("SnakeMove")

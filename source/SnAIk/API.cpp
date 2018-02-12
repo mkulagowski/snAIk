@@ -81,3 +81,14 @@ void API::runSimulation(int loopsNumber, bool draw) const
 		GameManager::GetInstance().MainLoop(loopsNumber, draw);
 	}
 }
+
+void API::initSim() const
+{
+	if (GameManager::GetInstance().Init())
+		GameManager::GetInstance().InitLoop();
+}
+
+void API::step(bool draw)
+{
+	GameManager::GetInstance().Step(draw);
+}

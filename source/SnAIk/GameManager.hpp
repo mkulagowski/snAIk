@@ -23,6 +23,8 @@ public:
     static GameManager& GetInstance();
 	bool Init();
     void MainLoop(int loopsNumber = 0, bool draw = true);
+	void InitLoop();
+	void Step(bool draw);
 
     const unsigned short GetWidth() const;
     const unsigned short GetHeight() const;
@@ -32,6 +34,7 @@ private:
     unsigned int mWidth, mHeight;
     unsigned int mScore;
     unsigned int mPhysicsSteps;
+	double mDeltaTime;
     bool mHasInitialized;
 
     std::unique_ptr<Snake> mSnake;

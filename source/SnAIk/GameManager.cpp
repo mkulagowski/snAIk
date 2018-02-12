@@ -79,11 +79,17 @@ bool GameManager::Init()
 			return false;
         }
 
-        // Create floor
+		// Create floor
         PlaneObject* floor = new PlaneObject(btVector3(0, 0, 1), 100.0f, 100.0f);
         floor->Init(btVector3(1, 1, 1), 0.0f);
         mRenderer.AddObject(floor);
         mPhysics.AddObject(floor->GetBody());
+
+		// Create floor limit
+		PlaneObject* floor2 = new PlaneObject(btVector3(0, 0, 1), 101.0f, 101.0f);
+		floor2->Init(btVector3(1, 0, 0), 0.0f);
+		floor2->Move(.1f, btVector3(0, 0, -1));
+		mRenderer.AddObject(floor2);
 
         // Create snake
         //CreateSnake();
@@ -151,6 +157,44 @@ void GameManager::MainLoop(int loopsNumber, bool draw)
 	} // Check if the ESC key was pressed or the window was closed
 	while (glfwGetKey(mGameWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
 		glfwWindowShouldClose(mGameWindow) == 0);
+}
+
+void GameManager::InitLoop()
+{
+	CreateSnake();
+	glfwSetWindowTitle(mGameWindow, "SnAIk");
+	mGameTimer.Start();
+}
+void GameManager::Step(bool draw)
+{
+	// Get frame interval
+	mDeltaTime = mGameTimer.Stop();
+	mGameTimer.Start();
+
+	// Get players input
+	if (draw)
+		GetPlayerInput(mDeltaTime);
+
+	// Update physics world and check for collisions
+	mPhysics.Update(mPhysicsSteps * mDeltaTime);
+
+	if (draw)
+	{
+		// Draw all objects in renderer
+		mRenderer.Draw();
+
+		// Swap buffers and check events
+		glfwSwapBuffers(mGameWindow);
+		glfwPollEvents();
+	}
+
+	mAPI->setSnake(mSnake.get());
+	if (mAPI->isMoveAvailable())
+	{
+		API::SnakeMoveStruct move = mAPI->getMove();
+		btVector3 direction(move.mDirection.x, move.mDirection.y, move.mDirection.z);
+		mSnake->TurnSegment(move.mSegment, direction * move.mTorque);
+	}
 }
 
 

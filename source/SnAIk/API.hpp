@@ -72,6 +72,8 @@ public:
     const bool isSnakeAvailable() const;
 
 	void runSimulation(int loopsNumber = 0, bool draw = true) const;
+	void initSim() const;
+	void step(bool draw);
 
 private:
     bool mIsMoveAvailable;

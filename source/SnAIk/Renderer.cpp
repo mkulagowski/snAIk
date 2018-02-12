@@ -67,8 +67,8 @@ bool Renderer::Init()
     mCameraUni = glGetUniformLocation(mProgram, "LightPosition_worldspace");
 
     // Set up camera view and load it into shaders
-    glm::vec3 cameraPos = glm::vec3(50, 50, 50);
-    glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
+    glm::vec3 cameraPos = glm::vec3(1, 1, 250);
+    glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 300.0f);
     glm::mat4 View = glm::lookAt(
         cameraPos,          // Camera at (0,75,1) in World Space
         glm::vec3(0, 0, 0), // and looks at the origin
