@@ -21,21 +21,21 @@ class GameManager
 {
 public:
     static GameManager& GetInstance();
-	bool Init();
-    void MainLoop(int loopsNumber = 0, bool draw = true);
+	bool Init(bool initRenderer = true);
+    void MainLoop(int loopsNumber = 0, bool render = true);
 	void InitLoop();
-	void Step(bool draw);
+	void Step(bool render);
 
     const unsigned short GetWidth() const;
     const unsigned short GetHeight() const;
 	void SetPhysicsSteps(unsigned int steps);
-
+	const bool IsRendering() const;
 private:
     unsigned int mWidth, mHeight;
     unsigned int mScore;
     unsigned int mPhysicsSteps;
 	double mDeltaTime;
-    bool mHasInitialized;
+    bool mHasInitialized, mInitRenderer;
 
     std::unique_ptr<Snake> mSnake;
 	API* mAPI;

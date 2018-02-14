@@ -1,8 +1,4 @@
-#include <fstream>
-#include <iostream>
 #include <string>
-#include <cstdlib>
-#include <ctime>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -15,7 +11,8 @@ GameManager::GameManager()
     , mHeight(768)
     , mHasInitialized(false)
     , mPhysicsSteps(10)
-	, mAPI(&API::getInstance())
+	, mAPI(&API::GetInstance())
+	, mInitRenderer(true)
 {
 }
 
@@ -31,47 +28,47 @@ GameManager& GameManager::GetInstance()
     return instance;
 }
 
-bool GameManager::Init()
+bool GameManager::Init(bool initRenderer)
 {
     if (!mHasInitialized)
     {
-        // Initialize rand() function for asteroids randomization
-        srand(static_cast<unsigned int>(time(NULL)));
+		mInitRenderer = initRenderer;
+		if (mInitRenderer)
+		{
+			// Initialize glfw
+			if (!glfwInit())
+			{
+				fprintf(stderr, "GAMEMANAGER: Failed to initialize GLFW\n");
+				return false;
+			}
 
-        // Initialize glfw
-        if (!glfwInit())
-        {
-            fprintf(stderr, "GAMEMANAGER: Failed to initialize GLFW\n");
-            return false;
-        }
+			// Set up window
+			glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
+			glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+			glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
 
-        // Set up window
-        glfwWindowHint(GLFW_SAMPLES, 4); // 4x antialiasing
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // We want OpenGL 3.3
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); //We don't want the old OpenGL
+			// Create window
+			mGameWindow = glfwCreateWindow(mWidth, mHeight, "SnAIk", NULL, NULL);
+			if (mGameWindow == NULL)
+			{
+				fprintf(stderr, "GAMEMANAGER: Failed to open GLFW window. If you have an Intel GPU, they are not OGL3.3 compatible.\n");
+				return false;
+			}
 
-        // Create window
-        mGameWindow = glfwCreateWindow(mWidth, mHeight, "SnAIk", NULL, NULL);
-        if (mGameWindow == NULL)
-        {
-            fprintf(stderr, "GAMEMANAGER: Failed to open GLFW window. If you have an Intel GPU, they are not OGL3.3 compatible.\n");
-            return false;
-        }
+			// Create context for ogl
+			glfwMakeContextCurrent(mGameWindow);
 
-        // Create context for ogl
-        glfwMakeContextCurrent(mGameWindow);
+			// Enable players input
+			glfwSetInputMode(mGameWindow, GLFW_STICKY_KEYS, GL_TRUE);
 
-        // Enable players input
-        glfwSetInputMode(mGameWindow, GLFW_STICKY_KEYS, GL_TRUE);
-
-        // Initialize renderer and physics world
-        if (!mRenderer.Init())
-        {
-            fprintf(stderr, "GAMEMANAGER: Failed to initialize Renderer module.\n");
-			return false;
-        }
-
+			// Initialize renderer and physics world
+			if (!mRenderer.Init())
+			{
+				fprintf(stderr, "GAMEMANAGER: Failed to initialize Renderer module.\n");
+				return false;
+			}
+		}
         if (!mPhysics.Init())
         {
             fprintf(stderr, "GAMEMANAGER: Failed to initialize Physics module.\n");
@@ -81,37 +78,41 @@ bool GameManager::Init()
 
 		// Create floor
         PlaneObject* floor = new PlaneObject(btVector3(0, 0, 1), 100.0f, 100.0f);
-        floor->Init(btVector3(1, 1, 1), 0.0f);
-        mRenderer.AddObject(floor);
-        mPhysics.AddObject(floor->GetBody());
+		floor->Init(btVector3(1, 1, 1), 0.0f);
+		mRenderer.AddObject(floor);
+		mPhysics.AddObject(floor->GetBody());
 
 		// Create floor limit
 		PlaneObject* floor2 = new PlaneObject(btVector3(0, 0, 1), 101.0f, 101.0f);
 		floor2->Init(btVector3(1, 0, 0), 0.0f);
-		floor2->Move(.1f, btVector3(0, 0, -1));
 		mRenderer.AddObject(floor2);
+		floor2->Move(.1f, btVector3(0, 0, -1));	
 
         // Create snake
-        //CreateSnake();
         mHasInitialized = true;
     }
     return true;
 }
 
-void GameManager::MainLoop(int loopsNumber, bool draw)
+void GameManager::MainLoop(int loopsNumber, bool render)
 {
 	CreateSnake();
-    std::string titleStr = "SnAIk head velocity = ";
-    glfwSetWindowTitle(mGameWindow, titleStr.c_str());
+	if (mInitRenderer) {
+		glfwSetWindowTitle(mGameWindow, "SnAIk");
+	}
     double deltaTime;
     mGameTimer.Start();
-    btVector3 torque;
-    std::string text;
 
 	// Loop management variables
 	loopsNumber = loopsNumber > 0 ? loopsNumber: 0;
 	const int changeVal = loopsNumber > 0 ? 1 : 0;
 	int counter = 0;
+
+	const auto loopLambda = [&]() -> bool {
+		if (mInitRenderer)
+			return glfwGetKey(mGameWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS && glfwWindowShouldClose(mGameWindow) == 0;
+		return true;
+	};
 
 	do
 	{
@@ -119,20 +120,14 @@ void GameManager::MainLoop(int loopsNumber, bool draw)
 		deltaTime = mGameTimer.Stop();
 		mGameTimer.Start();
 
-		// Show score in windows title
-		//glfwSetWindowTitle(mGameWindow, (titleStr + std::to_string(mHead->GetBody()->getLinearVelocity().length())).c_str());
-		torque = mSnake->GetTorque(0);
-		text = titleStr + "[ " + std::to_string(torque.x()) + ", " + std::to_string(torque.y()) + ", " + std::to_string(torque.z()) + " ]";
-		glfwSetWindowTitle(mGameWindow, text.c_str());
-
 		// Get players input
-		if (draw)
+		if (render)
 			GetPlayerInput(deltaTime);
 
 		// Update physics world and check for collisions
 		mPhysics.Update(mPhysicsSteps * deltaTime);
 
-		if (draw)
+		if (render)
 		{
 			// Draw all objects in renderer
 			mRenderer.Draw();
@@ -142,43 +137,40 @@ void GameManager::MainLoop(int loopsNumber, bool draw)
 			glfwPollEvents();
 		}
 
-		mAPI->setSnake(mSnake.get());
-		if (mAPI->isMoveAvailable())
+		mAPI->SetSnake(mSnake.get());
+		if (mAPI->IsMoveAvailable())
 		{
-			API::SnakeMoveStruct move = mAPI->getMove();
-			btVector3 direction(move.mDirection.x, move.mDirection.y, move.mDirection.z);
-			mSnake->TurnSegment(move.mSegment, direction * move.mTorque);
+			const API::SnakeMoveStruct move = mAPI->GetMove();
+			btVector3 torque(move.mTorque.x, move.mTorque.y, move.mTorque.z);
+			mSnake->TurnSegment(move.mSegment, torque);
 		}
 
 		counter += changeVal;
 		if (counter > loopsNumber)
 			break;
 
-	} // Check if the ESC key was pressed or the window was closed
-	while (glfwGetKey(mGameWindow, GLFW_KEY_ESCAPE) != GLFW_PRESS &&
-		glfwWindowShouldClose(mGameWindow) == 0);
+	} while (loopLambda());
 }
 
 void GameManager::InitLoop()
 {
 	CreateSnake();
-	glfwSetWindowTitle(mGameWindow, "SnAIk");
+	if (mInitRenderer) {
+		glfwSetWindowTitle(mGameWindow, "SnAIk");
+	}
 	mGameTimer.Start();
 }
-void GameManager::Step(bool draw)
+
+void GameManager::Step(bool render)
 {
 	// Get frame interval
 	mDeltaTime = mGameTimer.Stop();
 	mGameTimer.Start();
 
-	// Get players input
-	if (draw)
-		GetPlayerInput(mDeltaTime);
-
 	// Update physics world and check for collisions
 	mPhysics.Update(mPhysicsSteps * mDeltaTime);
 
-	if (draw)
+	if (render)
 	{
 		// Draw all objects in renderer
 		mRenderer.Draw();
@@ -188,12 +180,12 @@ void GameManager::Step(bool draw)
 		glfwPollEvents();
 	}
 
-	mAPI->setSnake(mSnake.get());
-	if (mAPI->isMoveAvailable())
+	mAPI->SetSnake(mSnake.get());
+	if (mAPI->IsMoveAvailable())
 	{
-		API::SnakeMoveStruct move = mAPI->getMove();
-		btVector3 direction(move.mDirection.x, move.mDirection.y, move.mDirection.z);
-		mSnake->TurnSegment(move.mSegment, direction * move.mTorque);
+		API::SnakeMoveStruct move = mAPI->GetMove();
+		btVector3 torque(move.mTorque.x, move.mTorque.y, move.mTorque.z);
+		mSnake->TurnSegment(move.mSegment, torque);
 	}
 }
 
@@ -222,7 +214,8 @@ void GameManager::CreateSnake()
 			mPhysics.RemoveObject(segment->GetBody());
 		}
 		mSnake->RemoveAllConstraints(mPhysics.GetWorld());
-		mRenderer.RemoveAllByTag(SNAKE_TAG);
+		if (mInitRenderer)
+			mRenderer.RemoveAllByTag(SNAKE_TAG);
 		mHead = nullptr;
 	}
 
@@ -230,7 +223,8 @@ void GameManager::CreateSnake()
     for (int i = 0; i < SEGMENT_LIMIT; i++)
     {
         const SegmentObject* segment = mSnake->GetSegment(i);
-        mRenderer.AddObject(segment);
+		if (mInitRenderer)
+			mRenderer.AddObject(segment);
         mPhysics.AddObject(segment->GetBody());
 
         if (i != (SEGMENT_LIMIT - 1))
@@ -312,4 +306,9 @@ void GameManager::SetPhysicsSteps(unsigned int steps)
 {
 	if (steps > 0)
 		mPhysicsSteps = steps;
+}
+
+const bool GameManager::IsRendering() const
+{
+	return mInitRenderer;
 }

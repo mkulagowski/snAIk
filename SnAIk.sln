@@ -55,7 +55,7 @@ Global
 		{22222788-13BC-3C67-8C21-F57C9813F657}.Release|x64.ActiveCfg = Release|x64
 		{22222788-13BC-3C67-8C21-F57C9813F657}.Release|x64.Build.0 = Release|x64
 		{FA497C90-F1E1-39E8-B4BF-B482B0C91BD2}.Debug|x64.ActiveCfg = Debug|Win32
-		{FA497C90-F1E1-39E8-B4BF-B482B0C91BD2}.Release|x64.ActiveCfg = Release|Win32
+		{FA497C90-F1E1-39E8-B4BF-B482B0C91BD2}.Release|x64.ActiveCfg = Release|x64
 		{0C99AF81-6C3D-3E7D-A9BC-8BAC0727569E}.Debug|x64.ActiveCfg = Debug|Win32
 		{0C99AF81-6C3D-3E7D-A9BC-8BAC0727569E}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection

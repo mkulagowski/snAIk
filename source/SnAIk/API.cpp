@@ -1,8 +1,12 @@
 #include "API.hpp"
 #include "FileSystem.hpp"
 #include "GameManager.hpp"
+#include <exception>
+#include <fstream>
+#define BOOST_PYTHON_STATIC_LIB
+#include "boost\python\errors.hpp"
 
-API& API::getInstance()
+API& API::GetInstance()
 {
     static API instance;
     return instance;
@@ -20,7 +24,7 @@ API::~API()
 {
 }
 
-API::SnakeMoveStruct API::getMove()
+API::SnakeMoveStruct API::GetMove()
 {
     std::lock_guard<std::mutex> lock(mMoveMutex);
     if (mIsMoveAvailable)
@@ -32,14 +36,14 @@ API::SnakeMoveStruct API::getMove()
     return SnakeMoveStruct();
 }
 
-void API::setMove(const SnakeMoveStruct& move)
+void API::SetMove(const SnakeMoveStruct& move)
 {
     std::lock_guard<std::mutex> lock(mMoveMutex);
     mMove = move;
     mIsMoveAvailable = true;
 }
 
-API::SnakeSnapshotStruct API::getSnake()
+API::SnakeSnapshotStruct API::GetSnake()
 {
     std::lock_guard<std::mutex> lock(mSnakeMutex);
     if (mIsSnakeAvailable)
@@ -50,45 +54,46 @@ API::SnakeSnapshotStruct API::getSnake()
 	return SnakeSnapshotStruct();
 }
 
-void API::setSnake(const Snake* snake)
+void API::SetSnake(const Snake* snake)
 {
     std::lock_guard<std::mutex> lock(mSnakeMutex);
     mSnake.mSegmentsNo = snake->GetSegmentsNumber();
     mSnake.mSegments.clear();
     for (int i = 0; i < mSnake.mSegmentsNo; ++i)
     {
-        btVector3 rot = snake->GetTorque(i);
+        btVector3 rot = snake->GetRotation(i);
         btVector3 pos = snake->GetPosition(i);
-        mSnake.mSegments.push_back(SegmentSnapshotStruct(rot, pos));
+		btVector3 trq = snake->GetTorque(i);
+        mSnake.mSegments.push_back(SegmentSnapshotStruct(rot, pos, trq));
     }
     mIsSnakeAvailable = true;
 }
 
-const bool API::isMoveAvailable() const
+const bool API::IsMoveAvailable() const
 {
     return mIsMoveAvailable;
 }
 
-const bool API::isSnakeAvailable() const
+const bool API::IsSnakeAvailable() const
 {
     return mIsSnakeAvailable;
 }
 
-void API::runSimulation(int loopsNumber, bool draw) const
+void API::RunSimulation(int loopsNumber, bool render) const
 {
 	// Start main loop
-	if (GameManager::GetInstance().Init()) {
-		GameManager::GetInstance().MainLoop(loopsNumber, draw);
+	if (GameManager::GetInstance().Init(render)) {
+		GameManager::GetInstance().MainLoop(loopsNumber, render);
 	}
 }
 
-void API::initSim() const
+void API::Init(bool render) const
 {
-	if (GameManager::GetInstance().Init())
+	if (GameManager::GetInstance().Init(render))
 		GameManager::GetInstance().InitLoop();
 }
 
-void API::step(bool draw)
+void API::Step(bool render)
 {
-	GameManager::GetInstance().Step(draw);
+	GameManager::GetInstance().Step(render);
 }

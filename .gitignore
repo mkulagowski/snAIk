@@ -3,6 +3,10 @@ Bin/
 Obj/
 *.a
 *.so
+Debug/
+Release/
+*.dir/
+x64/
 
 # Visual Studio Stuff
 *.vsp
@@ -12,6 +16,9 @@ Obj/
 *.sdf
 *.suo
 *.vcx
+*.sln
+*.vcxproj
+*.vcxproj.filters
 *.vcxproj.user
 *.VC.db
 /.vs

@@ -18,6 +18,7 @@ public:
     btVector3 GetPosition(unsigned int segmentIndex) const;
     btVector3 GetAveragePosition() const;
     btVector3 GetTorque(unsigned int segmentIndex) const;
+	btVector3 GetRotation(unsigned int segmentIndex) const;
 
     const btConeTwistConstraint* GetConstraint(unsigned int constraintIndex) const;
     void AddConstraint(unsigned int constraintIndex, btDynamicsWorld* world);

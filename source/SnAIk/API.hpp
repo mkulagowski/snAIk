@@ -33,18 +33,23 @@ public:
     {
 	public:
 		int mSegment;
-        float mTorque;
-		VectStruct mDirection;
+		VectStruct mTorque;
     };
 
     using SegmentSnapshotStruct = struct SegmentSnapshotStruct
     {
 		VectStruct mRotation;
 		VectStruct mPosition;
-        SegmentSnapshotStruct(VectStruct rot, VectStruct pos)
-            : mRotation(rot)
-            , mPosition(pos)
-        {};
+		VectStruct mTorque;
+		SegmentSnapshotStruct(VectStruct rot, VectStruct pos, VectStruct trq)
+			: mRotation(rot)
+			, mPosition(pos)
+			, mTorque(trq)
+		{};
+		SegmentSnapshotStruct(VectStruct rot, VectStruct pos)
+			: mRotation(rot)
+			, mPosition(pos)
+		{};
 		SegmentSnapshotStruct(){};
 		bool operator==(const SegmentSnapshotStruct& rhs)
 		{
@@ -57,23 +62,22 @@ public:
     {
         int mSegmentsNo;
 		SegmentList mSegments;
-		VectStruct mAveragePosition;
     };
 
-    static API& getInstance();
+    static API& GetInstance();
 
-    SnakeMoveStruct getMove();
-    void setMove(const SnakeMoveStruct& move);
+	SnakeMoveStruct GetMove();
+    void SetMove(const SnakeMoveStruct& move);
 
-    SnakeSnapshotStruct getSnake();
-    void setSnake(const Snake* snake);
+	SnakeSnapshotStruct GetSnake();
+    void SetSnake(const Snake* snake);
 
-    const bool isMoveAvailable() const;
-    const bool isSnakeAvailable() const;
+    const bool IsMoveAvailable() const;
+    const bool IsSnakeAvailable() const;
 
-	void runSimulation(int loopsNumber = 0, bool draw = true) const;
-	void initSim() const;
-	void step(bool draw);
+	void RunSimulation(int loopsNumber = 0, bool draw = true) const;
+	void Init(bool render) const;
+	void Step(bool render);
 
 private:
     bool mIsMoveAvailable;

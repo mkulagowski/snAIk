@@ -1,4 +1,5 @@
 #include "Object.hpp"
+#include "../../GameManager.hpp"
 
 #define M_PI 3.14159265358979323846
 
@@ -11,6 +12,7 @@ Object::Object()
     , mShape(nullptr)
     , mBody(nullptr)
 	, mTag(0)
+	, mRenderInited(GameManager::GetInstance().IsRendering())
 {
 }
 
@@ -23,13 +25,16 @@ Object::~Object()
         delete mBody->getMotionState();
         delete mBody;
 
-        // Unbind buffers
-        glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_NONE);
+		if (mRenderInited)
+		{
+			// Unbind buffers
+			glBindBuffer(GL_ARRAY_BUFFER, GL_NONE);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, GL_NONE);
 
-        // Delete buffers
-        glDeleteBuffers(1, &mVertexArrayID);
-        glDeleteBuffers(1, &mIndexArrayID);
+			// Delete buffers
+			glDeleteBuffers(1, &mVertexArrayID);
+			glDeleteBuffers(1, &mIndexArrayID);
+		}
     }
 }
 
@@ -37,25 +42,27 @@ void Object::Init(btVector3 color, float mass)
 {
     if (!mInitDone)
     {
-        // Generate and fill vertex buffer
-        glGenBuffers(1, &mVertexArrayID);
-        glBindBuffer(GL_ARRAY_BUFFER, mVertexArrayID);
-        glBufferData(GL_ARRAY_BUFFER, mVertexData.size() * sizeof(float),
-            &mVertexData[0], GL_STATIC_DRAW);
+		if (mRenderInited)
+		{
+			// Generate and fill vertex buffer
+			glGenBuffers(1, &mVertexArrayID);
+			glBindBuffer(GL_ARRAY_BUFFER, mVertexArrayID);
+			glBufferData(GL_ARRAY_BUFFER, mVertexData.size() * sizeof(float),
+				&mVertexData[0], GL_STATIC_DRAW);
 
-        // Generate and fill normals buffer
-        glGenBuffers(1, &mNormalArrayID);
-        glBindBuffer(GL_ARRAY_BUFFER, mNormalArrayID);
-        glBufferData(GL_ARRAY_BUFFER, mNormalData.size() * sizeof(float),
-            &mNormalData[0], GL_STATIC_DRAW);
+			// Generate and fill normals buffer
+			glGenBuffers(1, &mNormalArrayID);
+			glBindBuffer(GL_ARRAY_BUFFER, mNormalArrayID);
+			glBufferData(GL_ARRAY_BUFFER, mNormalData.size() * sizeof(float),
+				&mNormalData[0], GL_STATIC_DRAW);
 
-        // Generate and fill index buffer
-        glGenBuffers(1, &mIndexArrayID);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexArrayID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-            mIndices.size() * sizeof(unsigned short),
-            &mIndices[0], GL_STATIC_DRAW);
-
+			// Generate and fill index buffer
+			glGenBuffers(1, &mIndexArrayID);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mIndexArrayID);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER,
+				mIndices.size() * sizeof(unsigned short),
+				&mIndices[0], GL_STATIC_DRAW);
+		}
         // Set color and initialize objects physics
         mColor = color;
         InitPhysics(mass);
@@ -186,15 +193,23 @@ void Object::Rotate(float degrees, btVector3 rotationAxis)
 
 btVector3 Object::GetRotation() const
 {
-    if (mBody)
-    {
-        btTransform bulletRotation = mBody->getCenterOfMassTransform();
-        btQuaternion rot = bulletRotation.getRotation();
+	if (mBody)
+	{
+		btTransform bulletRotation = mBody->getCenterOfMassTransform();
+		btQuaternion rot = bulletRotation.getRotation();
 
-        return btVector3(rot.x(), rot.y(), rot.z());
-    }
+		return btVector3(rot.x(), rot.y(), rot.z());
+	}
 
-    return btVector3(0, 0, 0);
+	return btVector3(0, 0, 0);
+}
+
+btVector3 Object::GetTorque() const
+{
+	if (mBody)
+		return mBody->getTotalTorque();
+
+	return btVector3(0, 0, 0);
 }
 
 void Object::Move(double distance, btVector3 direction)
@@ -204,7 +219,7 @@ void Object::Move(double distance, btVector3 direction)
     SetPosition(GetPosition() + movement);
 }
 
-const bool Object::isMoveable() const
+const bool Object::IsMoveable() const
 {
     return mVelocity != 0.f;
 }
@@ -218,7 +233,7 @@ void Object::ApplyTorque(btVector3 torque)
     }
 }
 
-const uint8_t Object::getTag() const
+const uint8_t Object::GetTag() const
 {
 	return mTag;
 }

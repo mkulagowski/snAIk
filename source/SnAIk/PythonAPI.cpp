@@ -17,43 +17,41 @@ struct NullDeleter
 
 namespace boost {
 	namespace python {
-		static std::shared_ptr<API> getSharedAPIInstance()
+		static std::shared_ptr<API> GetSharedAPIInstance()
 		{
-			return std::shared_ptr<API>(&API::getInstance(), NullDeleter());
+			return std::shared_ptr<API>(&API::GetInstance(), NullDeleter());
 		}
 
 		BOOST_PYTHON_MODULE(SnAIk)
 		{
 			class_<API, std::shared_ptr<API>, boost::noncopyable>("API", no_init)
-				.def("getInstance", getSharedAPIInstance)
-				.staticmethod("getInstance")
-
-				.def("getMove", &API::getMove)
-				.def("setMove", &API::setMove)
-				.def("getSnake", &API::getSnake)
-				.def("setSnake", &API::setSnake)
-				.def("isMoveAvailable", &API::isMoveAvailable)
-				.def("isSnakeAvailable", &API::isSnakeAvailable)
-				.def("runSimulation", &API::runSimulation)
-				.def("initSim", &API::initSim)
-				.def("step", &API::step)
+				.def("GetInstance", GetSharedAPIInstance)
+				.staticmethod("GetInstance")
+				.def("GetMove", &API::GetMove)
+				.def("SetMove", &API::SetMove)
+				.def("GetSnake", &API::GetSnake)
+				.def("SetSnake", &API::SetSnake)
+				.def("IsMoveAvailable", &API::IsMoveAvailable)
+				.def("IsSnakeAvailable", &API::IsSnakeAvailable)
+				.def("RunSimulation", &API::RunSimulation)
+				.def("Init", &API::Init)
+				.def("Step", &API::Step)
 				;
 
 			class_<SnakeMove>("SnakeMove")
 				.def_readwrite("segment", &SnakeMove::mSegment)
 				.def_readwrite("torque", &SnakeMove::mTorque)
-				.def_readwrite("direction", &SnakeMove::mDirection)
 				;
 
 			class_<SnakeSnapshot>("SnakeSnapshot")
 				.def_readwrite("segmentsNo", &SnakeSnapshot::mSegmentsNo)
 				.def_readwrite("segments", &SnakeSnapshot::mSegments)
-				.def_readwrite("averagePosition", &SnakeSnapshot::mAveragePosition)
 				;
 
 			class_<SegmentSnapshot>("SegmentSnapshot")
 				.def_readwrite("rotation", &SegmentSnapshot::mRotation)
 				.def_readwrite("position", &SegmentSnapshot::mPosition)
+				.def_readwrite("torque", &SegmentSnapshot::mTorque)
 				;
 
 			class_<VectStruct>("VectStruct")
@@ -69,5 +67,3 @@ namespace boost {
 
 	} // namespace boost::python
 }
-
-#include "libs/python/test/module_tail.cpp"

@@ -124,13 +124,12 @@ void Renderer::AddObject(const Object * obj)
 
 void Renderer::RemoveAllByTag(const uint8_t& tag)
 {
-	auto iterator = std::remove_if(mObjectList.begin(), mObjectList.end(),
+	mObjectList.remove_if(
 		[&tag](const Object* obj) -> bool
 		{
-			return obj->getTag() == tag;
+			return obj->GetTag() == tag;
 		}
 	);
-	mObjectList.erase_after(iterator, mObjectList.end());
 }
 
 bool Renderer::LoadShaders(std::string vertex, std::string fragment)

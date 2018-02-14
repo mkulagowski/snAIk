@@ -29,9 +29,10 @@ public:
     btVector3 GetRotation() const;
     void Rotate (float degrees, btVector3 rotationAxis);
     void ApplyTorque(btVector3 torque);
+	btVector3 GetTorque() const;
 
-    const bool isMoveable() const;
-	const uint8_t getTag() const;
+    const bool IsMoveable() const;
+	const uint8_t GetTag() const;
 
 protected:
     GLuint mVertexArrayID, mNormalArrayID, mIndexArrayID;
@@ -44,9 +45,9 @@ protected:
 
     float mVelocity;
     btVector3 mColor;
-    bool mInitDone;
+    bool mInitDone, mRenderInited;
 	uint8_t mTag;
 
     virtual void AddShape() = 0;
-    void InitPhysics(float mass);
+	void InitPhysics(float mass);
 };

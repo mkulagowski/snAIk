@@ -17,7 +17,7 @@ TEST_F(BoxObjectTest, CtorTest)
     BoxObject test(2, 2, 2);
     ASSERT_EQ(36, test.GetIndicesCount());
     ASSERT_EQ(36, test.GetVerticesCount());
-    ASSERT_TRUE(test.isMoveable());
+    ASSERT_TRUE(test.IsMoveable());
     ASSERT_EQ(nullptr, test.GetBody());
     ASSERT_EQ(emptyVec, test.GetColor());
     ASSERT_EQ(emptyVec, test.GetPosition());
@@ -28,7 +28,7 @@ TEST_F(BoxObjectTest, CtorTest)
     BoxObject test2(boxSize);
     ASSERT_EQ(36, test2.GetIndicesCount());
     ASSERT_EQ(36, test2.GetVerticesCount());
-    ASSERT_TRUE(test2.isMoveable());
+    ASSERT_TRUE(test2.IsMoveable());
     ASSERT_EQ(nullptr, test2.GetBody());
     ASSERT_EQ(emptyVec, test2.GetColor());
     ASSERT_EQ(emptyVec, test2.GetPosition());
@@ -43,7 +43,7 @@ TEST_F(BoxObjectTest, InitTest)
     //bool res = GameManager::GetInstance().Init();
     ASSERT_EQ(36, test.GetIndicesCount());
     ASSERT_EQ(36, test.GetVerticesCount());
-    ASSERT_TRUE(test.isMoveable());
+    ASSERT_TRUE(test.IsMoveable());
     ASSERT_EQ(nullptr, test.GetBody());
     ASSERT_EQ(emptyVec, test.GetColor());
     ASSERT_EQ(emptyVec, test.GetPosition());
@@ -55,7 +55,7 @@ TEST_F(BoxObjectTest, InitTest)
     test.Init(color, mass);
     ASSERT_EQ(36, test.GetIndicesCount());
     ASSERT_EQ(36, test.GetVerticesCount());
-    ASSERT_TRUE(test.isMoveable());
+    ASSERT_TRUE(test.IsMoveable());
     ASSERT_NE(nullptr, test.GetBody());
     ASSERT_EQ(color, test.GetColor());
     ASSERT_EQ(emptyVec, test.GetPosition());

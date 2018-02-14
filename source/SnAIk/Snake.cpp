@@ -30,6 +30,7 @@ Snake::Snake(unsigned int segmentsNo, float totalWeight)
             mSegments.emplace_back(segmentSize);
             SegmentObject& segment = mSegments.back();
             segment.Init(segmentColor, mSegmentWeight);
+			//segment.InitPhysics(mSegmentWeight);
             segment.Move(i * 1.f, btVector3(1, 0, 0));
             segment.Move(1.f, btVector3(0, 0, 1));
             segment.GetBody()->forceActivationState(DISABLE_DEACTIVATION);
@@ -141,9 +142,18 @@ bool Snake::TurnSegment(unsigned int segmentIndex, btVector3 torque)
 
 btVector3 Snake::GetTorque(unsigned int segmentIndex) const
 {
-    const SegmentObject* obj = GetSegment(segmentIndex);
-    if (obj == nullptr)
-        return btVector3(0, 0, 0);
+	const SegmentObject* obj = GetSegment(segmentIndex);
+	if (obj == nullptr)
+		return btVector3(0, 0, 0);
 
-    return obj->GetRotation();
+	return obj->GetTorque();
+}
+
+btVector3 Snake::GetRotation(unsigned int segmentIndex) const
+{
+	const SegmentObject* obj = GetSegment(segmentIndex);
+	if (obj == nullptr)
+		return btVector3(0, 0, 0);
+
+	return obj->GetRotation();
 }
