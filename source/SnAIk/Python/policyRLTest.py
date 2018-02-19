@@ -5,7 +5,6 @@ import tensorflow as tf
 import tensorflow.contrib.slim as slim
 import numpy as np
 import os
-from datetime import datetime
 import csv
 
 def calc_episodes(hours):
@@ -84,6 +83,7 @@ class SimulatorHandler():
         self.api = SnAIk.API.GetInstance()
         self.draw = should_draw
         self.eplen = episode_length
+        self.finishline = 30
         self.curr = 0
 
     def init(self):
@@ -100,27 +100,29 @@ class SimulatorHandler():
         # get next state
         s1 = snaik_to_list(self.api.GetSnake())
         # get "done" flag
-        d = s1[3] >= 50 or s1[4] >= 50  # check if head is out of bounds
+        #print("state=" + str(s1[:5]))
+        d = abs(s1[3]) >= self.finishline or abs(s1[4]) >= self.finishline  # check if head is out of bounds
+        #print("d1=%s" % d)
         #get reward
         r = round(np.sqrt(s1[3] ** 2 + s1[4] ** 2) / 10) - 5 + (d * 100 * (self.eplen - self.curr)) # 1/10 of distance from mid
+        #print("r=%s" % r)
         d = d or self.curr >= self.eplen
+        #print("d2=%s" % d)
         return s1, r, d, self.curr
 
 
 def main():
     ##### VARIABLES
     # number of hours network should learn for without drawing
-    total_hours = 7
+    total_hours = 20
     # whether to calculate number of episodes based on total_hours
     use_hours = True
     # number of episodes if use_hours is False
-    total_episodes = 10
+    total_episodes = 2
     # maximum steps in a single episode
     max_ep = 30*60 # 1 minute of 30fps
     # update network every N steps
     update_frequency = 5
-    # Last directory index
-    subfolderIdx = 4
     # Should restore model from harddrive
     load_model = True
     # Show GUI
@@ -131,9 +133,11 @@ def main():
     seg = range(0, snaik_size)
     coord = range(-1, 2)
     actions = [(x,y,z) for x in seg for y in coord for z in coord]
-    model_dir = "E:/snaikModel"
-    model_path = model_dir + '/' + str(subfolderIdx) + 'snaikModel'
-    old_model_path = model_dir + '/' + str(subfolderIdx - 1) + 'snaikModel'
+    model_dir = "E:\\snaikModel"
+    dir_idxs = [int(x) for x in os.listdir(model_dir)]
+    last_dir_idx = max(dir_idxs) if dir_idxs else 0;
+    model_path = os.path.normpath(model_dir + '\\' + str(last_dir_idx + 1))
+    old_model_path = os.path.normpath(model_dir + '\\' + str(last_dir_idx))
     if use_hours is True:
         total_episodes = round(total_hours * 3600 * 10 / 8.7)
 
@@ -162,7 +166,7 @@ def main():
                 print('Loading Model...')
                 ckpt = tf.train.get_checkpoint_state(old_model_path)
                 saver.restore(sess, ckpt.model_checkpoint_path)
-                print('Restored from %s' % ckpt.model_checkpoint_path)
+                print('Restored from %s' % os.path.normpath(ckpt.model_checkpoint_path))
             sess.run(init)
             i = 0
             total_reward = []
@@ -185,7 +189,7 @@ def main():
                     a = np.random.choice(action_dist[0], p = action_dist[0])
                     a = np.argmax(action_dist == a)
 
-                    s1, r, d, j = env.step(actions[a])
+                    s1, r, d, j = env.step(actions[a], show_gui)
 
                     ep_history.append([s, a, r, s1])
                     s = s1
@@ -220,7 +224,7 @@ def main():
 
             #end of training
             path = saver.save(sess, model_path + '/model-' + str(i) + '.cptk')
-            print("Last model saved in path: %s" % path)
+            print("Last model saved in path: %s" % os.path.normpath(path))
             
 
 
