@@ -40,11 +40,13 @@ public:
     {
 		VectStruct mRotation;
 		VectStruct mPosition;
-		VectStruct mTorque;
-		SegmentSnapshotStruct(VectStruct rot, VectStruct pos, VectStruct trq)
+		VectStruct mAngularVelocity;
+		float mLinearSpeed;
+		SegmentSnapshotStruct(VectStruct rot, VectStruct pos, VectStruct av, float speed)
 			: mRotation(rot)
 			, mPosition(pos)
-			, mTorque(trq)
+			, mAngularVelocity(av)
+			, mLinearSpeed(speed)
 		{};
 		SegmentSnapshotStruct(VectStruct rot, VectStruct pos)
 			: mRotation(rot)
@@ -53,7 +55,7 @@ public:
 		SegmentSnapshotStruct(){};
 		bool operator==(const SegmentSnapshotStruct& rhs)
 		{
-			return mRotation == rhs.mRotation && mPosition == rhs.mPosition;
+			return mRotation == rhs.mRotation && mPosition == rhs.mPosition && mAngularVelocity == rhs.mAngularVelocity && mLinearSpeed == rhs.mLinearSpeed;
 		}
     };
 
@@ -66,9 +68,10 @@ public:
 
     static API& GetInstance();
 
-	SnakeMoveStruct GetMove();
-    void SetMove(const SnakeMoveStruct& move);
-
+	std::vector<SnakeMoveStruct> GetMove();
+	void AddMove(const SnakeMoveStruct& move);
+    void SetMove(const std::vector<SnakeMoveStruct>& move);
+	//void SetMove( move);
 	SnakeSnapshotStruct GetSnake();
     void SetSnake(const Snake* snake);
 
@@ -81,7 +84,7 @@ public:
 
 private:
     bool mIsMoveAvailable;
-    SnakeMoveStruct mMove;
+	std::vector<SnakeMoveStruct> mMove;
     std::mutex mMoveMutex;
     bool mIsSnakeAvailable;
     SnakeSnapshotStruct mSnake;

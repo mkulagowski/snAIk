@@ -6,10 +6,6 @@
 
 #include "Objects/Primitives/Object.hpp"
 
-const std::string FSHADER_PATH1 = "source\\SnAIk\\Shaders\\Main.fragmentshader";
-const std::string VSHADER_PATH1 = "source\\SnAIk\\Shaders\\Main.vertexshader";
-
-
 class Renderer
 {
 public:
@@ -21,6 +17,8 @@ public:
     void Draw() const;
     void AddObject(const Object* obj);
 	void RemoveAllByTag(const uint8_t& tag);
+	void MoveCamera(const btVector3 moveVect);
+	void ChangeLightPower(const float power);
 
 private:
     GLint mProgram;
@@ -28,8 +26,11 @@ private:
     GLint mVMatrixUni;
     GLint mPMatrixUni;
     GLint mColorUni;
-    GLint mCameraUni;
+    GLint mLightUni;
+	GLint mLightPowerUni;
     GLuint mDummyVAO;
+	btVector3 mCameraPos;
+	float mLightPower;
     std::forward_list<const Object*> mObjectList;
 
 	bool LoadShaders(std::string vertex, std::string fragment);

@@ -3,6 +3,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "GameManager.hpp"
+#include "Defines.hpp"
 
 const SegmentObject* mHead = nullptr;
 
@@ -10,7 +11,7 @@ GameManager::GameManager()
     : mWidth(1024)
     , mHeight(768)
     , mHasInitialized(false)
-    , mPhysicsSteps(10)
+    , mPhysicsSteps(1)
 	, mAPI(&API::GetInstance())
 	, mInitRenderer(true)
 {
@@ -26,6 +27,11 @@ GameManager& GameManager::GetInstance()
 {
     static GameManager instance;
     return instance;
+}
+
+static void _tickCallback(btDynamicsWorld* world, btScalar timeStep)
+{
+	GameManager::GetInstance().tickCallback(world, timeStep);
 }
 
 bool GameManager::Init(bool initRenderer)
@@ -77,21 +83,42 @@ bool GameManager::Init(bool initRenderer)
         }
 
 		// Create floor
-        PlaneObject* floor = new PlaneObject(btVector3(0, 0, 1), 100.0f, 100.0f);
+        PlaneObject* floor = new PlaneObject(btVector3(0, 0, 1), 100.0f * SCALE, 100.0f * SCALE);
 		floor->Init(btVector3(1, 1, 1), 0.0f);
 		mRenderer.AddObject(floor);
+		floor->GetBody()->setFriction(1);
 		mPhysics.AddObject(floor->GetBody());
 
 		// Create floor limit
-		PlaneObject* floor2 = new PlaneObject(btVector3(0, 0, 1), 101.0f, 101.0f);
+		PlaneObject* floor2 = new PlaneObject(btVector3(0, 0, 1), 101.0f * SCALE, 101.0f * SCALE);
 		floor2->Init(btVector3(1, 0, 0), 0.0f);
 		mRenderer.AddObject(floor2);
-		floor2->Move(.1f, btVector3(0, 0, -1));	
+		floor2->GetBody()->setFriction(1);
+		floor2->Move(.1f * SCALE, btVector3(0, 0, -1));
 
-        // Create snake
+		mPhysics.GetWorld()->setInternalTickCallback(_tickCallback);
+
         mHasInitialized = true;
     }
     return true;
+}
+
+void GameManager::tickCallback(btDynamicsWorld *world, btScalar timeStep)
+{
+	if (mSnake)
+	{
+		int limit = mSnake->GetSegmentsNumber();
+		for (int i = 0; i < limit; ++i)
+		{
+			const SegmentObject* segment = mSnake->GetSegment(i);
+			btVector3 velocity = segment->GetAngularVelocity();
+			btScalar speed = velocity.length();
+			if (speed > MAX_ANGULAR_SPEED) {
+				velocity *= MAX_ANGULAR_SPEED / speed;
+				segment->GetBody()->setAngularVelocity(velocity);
+			}
+		}
+	}
 }
 
 void GameManager::MainLoop(int loopsNumber, bool render)
@@ -123,7 +150,7 @@ void GameManager::MainLoop(int loopsNumber, bool render)
 		// Get players input
 		if (render)
 			GetPlayerInput(deltaTime);
-
+		//printf("%f \t || %f\n", mHead->GetAngularVelocity().length(), mHead->GetBody()->getLinearVelocity().length());
 		// Update physics world and check for collisions
 		mPhysics.Update(mPhysicsSteps * deltaTime);
 
@@ -140,9 +167,10 @@ void GameManager::MainLoop(int loopsNumber, bool render)
 		mAPI->SetSnake(mSnake.get());
 		if (mAPI->IsMoveAvailable())
 		{
-			const API::SnakeMoveStruct move = mAPI->GetMove();
-			btVector3 torque(move.mTorque.x, move.mTorque.y, move.mTorque.z);
-			mSnake->TurnSegment(move.mSegment, torque);
+			for (const auto& move : mAPI->GetMove()) {
+				btVector3 torque(move.mTorque.x, move.mTorque.y, move.mTorque.z);
+				mSnake->TurnSegment(move.mSegment, torque);
+			}
 		}
 
 		counter += changeVal;
@@ -183,9 +211,10 @@ void GameManager::Step(bool render)
 	mAPI->SetSnake(mSnake.get());
 	if (mAPI->IsMoveAvailable())
 	{
-		API::SnakeMoveStruct move = mAPI->GetMove();
-		btVector3 torque(move.mTorque.x, move.mTorque.y, move.mTorque.z);
-		mSnake->TurnSegment(move.mSegment, torque);
+		for (const auto& move : mAPI->GetMove()) {
+			btVector3 torque(move.mTorque.x, move.mTorque.y, move.mTorque.z);
+			mSnake->TurnSegment(move.mSegment, torque);
+		}
 	}
 }
 
@@ -287,16 +316,35 @@ void GameManager::GetPlayerInput(double deltaTime)
     }
 
 
-    if (glfwGetKey(mGameWindow, GLFW_KEY_T) == GLFW_PRESS)
-    {
-        side = MOVEMENT_SPEED;
-        segmentIdx = (SEGMENT_LIMIT * 5) / 5;
-    }
-    if (glfwGetKey(mGameWindow, GLFW_KEY_G) == GLFW_PRESS)
-    {
-        side = -MOVEMENT_SPEED;
-        segmentIdx = (SEGMENT_LIMIT * 5) / 5;
-    }
+	if (glfwGetKey(mGameWindow, GLFW_KEY_T) == GLFW_PRESS)
+	{
+		side = MOVEMENT_SPEED;
+		segmentIdx = (SEGMENT_LIMIT * 5) / 5;
+	}
+	if (glfwGetKey(mGameWindow, GLFW_KEY_G) == GLFW_PRESS)
+	{
+		side = -MOVEMENT_SPEED;
+		segmentIdx = (SEGMENT_LIMIT * 5) / 5;
+	}
+
+
+	if (glfwGetKey(mGameWindow, GLFW_KEY_Z) == GLFW_PRESS)
+	{
+		mRenderer.MoveCamera(btVector3(0, 0, 1 * SCALE));
+	}
+	if (glfwGetKey(mGameWindow, GLFW_KEY_X) == GLFW_PRESS)
+	{
+		mRenderer.MoveCamera(btVector3(0, 0, -1 * SCALE));
+	}
+
+	if (glfwGetKey(mGameWindow, GLFW_KEY_C) == GLFW_PRESS)
+	{
+		mRenderer.ChangeLightPower(10);
+	}
+	if (glfwGetKey(mGameWindow, GLFW_KEY_V) == GLFW_PRESS)
+	{
+		mRenderer.ChangeLightPower(-10);
+	}
 
     btVector3 torque(upward, forward, side);
     mSnake->TurnSegment(--segmentIdx, torque);

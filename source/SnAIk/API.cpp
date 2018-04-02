@@ -24,28 +24,36 @@ API::~API()
 {
 }
 
-API::SnakeMoveStruct API::GetMove()
+std::vector<API::SnakeMoveStruct> API::GetMove()
 {
     std::lock_guard<std::mutex> lock(mMoveMutex);
     if (mIsMoveAvailable)
     {
         mIsMoveAvailable = false;
-        return mMove;
+		return mMove;
     }
 
-    return SnakeMoveStruct();
+    return std::vector<SnakeMoveStruct>();
 }
 
-void API::SetMove(const SnakeMoveStruct& move)
+void API::AddMove(const SnakeMoveStruct& move)
 {
-    std::lock_guard<std::mutex> lock(mMoveMutex);
-    mMove = move;
-    mIsMoveAvailable = true;
+	std::lock_guard<std::mutex> lock(mMoveMutex);
+	mMove.push_back(move);
+	mIsMoveAvailable = true;
+}
+
+void API::SetMove(const std::vector<SnakeMoveStruct>& move)
+{
+	std::lock_guard<std::mutex> lock(mMoveMutex);
+	mMove = move;
+	mIsMoveAvailable = true;
 }
 
 API::SnakeSnapshotStruct API::GetSnake()
 {
     std::lock_guard<std::mutex> lock(mSnakeMutex);
+	mMove.clear();
     if (mIsSnakeAvailable)
     {
         mIsSnakeAvailable = false;
@@ -59,12 +67,14 @@ void API::SetSnake(const Snake* snake)
     std::lock_guard<std::mutex> lock(mSnakeMutex);
     mSnake.mSegmentsNo = snake->GetSegmentsNumber();
     mSnake.mSegments.clear();
+	//printf("\nSNAIK\n");
     for (int i = 0; i < mSnake.mSegmentsNo; ++i)
     {
         btVector3 rot = snake->GetRotation(i);
         btVector3 pos = snake->GetPosition(i);
-		btVector3 trq = snake->GetTorque(i);
-        mSnake.mSegments.push_back(SegmentSnapshotStruct(rot, pos, trq));
+		btVector3 av = snake->GetAngularVelocity(i);
+		float speed = snake->GetLinearVelocity(i).length();
+        mSnake.mSegments.push_back(SegmentSnapshotStruct(rot, pos, av, speed));
     }
     mIsSnakeAvailable = true;
 }

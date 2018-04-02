@@ -8,10 +8,13 @@
 
 #include "Renderer.hpp"
 #include "GameManager.hpp"
+#include "Defines.hpp"
 
 
 Renderer::Renderer()
     : mDummyVAO(GL_NONE)
+	, mCameraPos(btVector3(0, 2, 200) * SCALE)
+	, mLightPower(5000.f)
 {
 }
 
@@ -33,7 +36,7 @@ bool Renderer::Init()
         return false;
     }
 
-    // Set bg color - obviously black, as it usually is in outer space
+    // Set bg color - obviously black
     glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     // Set viewport
@@ -64,25 +67,45 @@ bool Renderer::Init()
     mVMatrixUni = glGetUniformLocation(mProgram, "View");
     mPMatrixUni = glGetUniformLocation(mProgram, "Projection");
     mColorUni = glGetUniformLocation(mProgram, "ObjectColor");
-    mCameraUni = glGetUniformLocation(mProgram, "LightPosition_worldspace");
+    mLightUni = glGetUniformLocation(mProgram, "LightPosition_worldspace");
+	mLightPowerUni = glGetUniformLocation(mProgram, "LightPower");
 
     // Set up camera view and load it into shaders
-    glm::vec3 cameraPos = glm::vec3(1, 1, 250);
-    glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 300.0f);
+    glm::vec3 cameraPos = glm::vec3(mCameraPos.getX(), mCameraPos.getY(), mCameraPos.getZ());
+	glm::mat4 Projection = glm::perspective(45.0f, 4.0f / 3.0f, 0.1f, 300.0f);// *SCALE);
     glm::mat4 View = glm::lookAt(
-        cameraPos,          // Camera at (0,75,1) in World Space
+        cameraPos,          // Camera in World Space
         glm::vec3(0, 0, 0), // and looks at the origin
-        glm::vec3(0, 0, 1)  // Head is up (set to 0,-1,0 to look upside-down)
-        );
+        glm::vec3(0, 0, 1)  // Head is up (0,-1,0 to look upside-down)
+    );
     glUniformMatrix4fv(mVMatrixUni, 1, false, &View[0][0]);
     glUniformMatrix4fv(mPMatrixUni, 1, false, &Projection[0][0]);
-    glUniform3f(mCameraUni, cameraPos.x, cameraPos.y, cameraPos.z);
+    glUniform3f(mLightUni, cameraPos.x, cameraPos.y, cameraPos.z);
+	glUniform1f(mLightPowerUni, mLightPower);
 
     // Enable AttribArray - 0 for vertices, 1 for normals
     glEnableVertexAttribArray(0);
     glEnableVertexAttribArray(1);
 
     return true;
+}
+
+void Renderer::MoveCamera(btVector3 moveVect)
+{
+	mCameraPos += moveVect;
+	glm::vec3 cameraPos = glm::vec3(mCameraPos.getX(), mCameraPos.getY(), mCameraPos.getZ());
+	glm::mat4 View = glm::lookAt(
+		cameraPos,          // Camera in World Space
+		glm::vec3(0, 0, 0), // and looks at the origin
+		glm::vec3(0, 0, 1)  // Head is up (0,-1,0 to look upside-down)
+	);
+	glUniformMatrix4fv(mVMatrixUni, 1, false, &View[0][0]);
+}
+
+void Renderer::ChangeLightPower(float power)
+{
+	mLightPower += power;
+	glUniform1f(mLightPowerUni, mLightPower);
 }
 
 void Renderer::Draw() const

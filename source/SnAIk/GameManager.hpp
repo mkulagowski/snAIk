@@ -12,11 +12,6 @@
 #include "Objects/WallObject.hpp"
 #include "Objects/SegmentObject.hpp"
 
-
-#define MOVEMENT_SPEED 10.0f
-#define SEGMENT_LIMIT 15
-#define TOTAL_WEIGHT 5
-
 class GameManager
 {
 public:
@@ -30,6 +25,7 @@ public:
     const unsigned short GetHeight() const;
 	void SetPhysicsSteps(unsigned int steps);
 	const bool IsRendering() const;
+	void tickCallback(btDynamicsWorld *world, btScalar timeStep);
 private:
     unsigned int mWidth, mHeight;
     unsigned int mScore;

@@ -7,7 +7,7 @@ BoxObject::BoxObject(btVector3 halfSize)
     float x = static_cast<float>(halfSize.getX());
     float y = static_cast<float>(halfSize.getY());
     float z = static_cast<float>(halfSize.getZ());
-
+	mComOffset = btVector3(0, -y, 0);
     mVertexData = {
         // front wall
         x, y, z, // 0

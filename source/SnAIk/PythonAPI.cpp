@@ -28,6 +28,7 @@ namespace boost {
 				.def("GetInstance", GetSharedAPIInstance)
 				.staticmethod("GetInstance")
 				.def("GetMove", &API::GetMove)
+				.def("AddMove", &API::AddMove)
 				.def("SetMove", &API::SetMove)
 				.def("GetSnake", &API::GetSnake)
 				.def("SetSnake", &API::SetSnake)
@@ -51,7 +52,8 @@ namespace boost {
 			class_<SegmentSnapshot>("SegmentSnapshot")
 				.def_readwrite("rotation", &SegmentSnapshot::mRotation)
 				.def_readwrite("position", &SegmentSnapshot::mPosition)
-				.def_readwrite("torque", &SegmentSnapshot::mTorque)
+				.def_readwrite("angularVelocity", &SegmentSnapshot::mAngularVelocity)
+				.def_readwrite("speed", &SegmentSnapshot::mLinearSpeed)
 				;
 
 			class_<VectStruct>("VectStruct")

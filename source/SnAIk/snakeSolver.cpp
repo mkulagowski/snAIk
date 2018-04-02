@@ -533,7 +533,7 @@ void	snakeSolver::applyAnisotropicFriction(btCollisionObject* colObj, btVector3&
         
 		// Make friction lesser, when going forward
 		if (loc_lateral.y() < 0 && friction_scaling.y() != 0)
-			friction_scaling.setY(1);// / friction_scaling.y());
+			friction_scaling.setY(friction_scaling.y() / 2);
 
 		//apply anisotropic friction
         loc_lateral *= friction_scaling;

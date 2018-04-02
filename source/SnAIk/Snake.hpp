@@ -17,10 +17,11 @@ public:
     const SegmentObject* GetTail() const;
     btVector3 GetPosition(unsigned int segmentIndex) const;
     btVector3 GetAveragePosition() const;
-    btVector3 GetTorque(unsigned int segmentIndex) const;
+	btVector3 GetAngularVelocity(unsigned int segmentIndex) const;
+	btVector3 GetLinearVelocity(unsigned int segmentIndex) const;
 	btVector3 GetRotation(unsigned int segmentIndex) const;
 
-    const btConeTwistConstraint* GetConstraint(unsigned int constraintIndex) const;
+    const btGeneric6DofConstraint* GetConstraint(unsigned int constraintIndex) const;
     void AddConstraint(unsigned int constraintIndex, btDynamicsWorld* world);
 	void RemoveAllConstraints(btDynamicsWorld* world);
 
@@ -30,5 +31,5 @@ private:
     unsigned int mSegmentsNo;
     float mSegmentWeight;
     std::vector<SegmentObject> mSegments;
-    std::vector<btConeTwistConstraint> mConstraints;
+    std::vector<btGeneric6DofConstraint> mConstraints;
 };

@@ -29,7 +29,8 @@ public:
     btVector3 GetRotation() const;
     void Rotate (float degrees, btVector3 rotationAxis);
     void ApplyTorque(btVector3 torque);
-	btVector3 GetTorque() const;
+	btVector3 GetAngularVelocity() const;
+	btVector3 GetLinearVelocity() const;
 
     const bool IsMoveable() const;
 	const uint8_t GetTag() const;
@@ -41,8 +42,10 @@ protected:
     std::vector<unsigned short> mIndices;
 
     btCollisionShape* mShape;
-    btRigidBody* mBody;
+	btRigidBody* mBody;
+	btCompoundShape* mComp;
 
+	btVector3 mComOffset;
     float mVelocity;
     btVector3 mColor;
     bool mInitDone, mRenderInited;

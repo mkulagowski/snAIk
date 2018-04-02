@@ -78,23 +78,30 @@ void Object::InitPhysics(float mass)
 
     // Create motion state at the start of coords
     btVector3 position(0, 0, 0);
-    btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), position));
+    btDefaultMotionState* motionState = new btDefaultMotionState(btTransform(btQuaternion(0, 0, 0, 1), mComOffset));
+
+	mComp = new btCompoundShape();
+	btTransform comTrans;
+	comTrans.setIdentity();
+	comTrans.setOrigin(mComOffset);
+	mComp->addChildShape(comTrans, mShape);
 
     // Calculate inertia
     btVector3 inertia(0, 0, 0);
     mShape->calculateLocalInertia(mass, inertia);
 
     // Create a rigid body
-    btRigidBody::btRigidBodyConstructionInfo bulletRigidBodyCI(mass, motionState, mShape, inertia);
+    btRigidBody::btRigidBodyConstructionInfo bulletRigidBodyCI(mass, motionState, mComp, inertia);
+	
     mBody = new btRigidBody(bulletRigidBodyCI);
-    
+	/*
     // Set friction and angular factor for dynamic objects
     if (mass > 0)
     {
         mBody->setAngularFactor(btVector3(1, 0, 1));
         mBody->setAnisotropicFriction(btVector3(1, 1, 1));
     }
-
+	*/
     // Set rigid bodys pointer to this Object
     mBody->setUserPointer(this);
 }
@@ -204,11 +211,21 @@ btVector3 Object::GetRotation() const
 	return btVector3(0, 0, 0);
 }
 
-btVector3 Object::GetTorque() const
+btVector3 Object::GetAngularVelocity() const
 {
 	if (mBody)
-		return mBody->getTotalTorque();
+		return mBody->getAngularVelocity();
 
+	printf("No object found!\n");
+	return btVector3(0, 0, 0);
+}
+
+btVector3 Object::GetLinearVelocity() const
+{
+	if (mBody)
+		return mBody->getLinearVelocity();
+
+	printf("No object found!\n");
 	return btVector3(0, 0, 0);
 }
 

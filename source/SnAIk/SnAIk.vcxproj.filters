@@ -87,6 +87,9 @@
     <ClInclude Include="E:\Projects\ert\snAIk\source\SnAIk\Objects\Primitives\PlaneObject.hpp">
       <Filter>Source Files\Objects\Primitives</Filter>
     </ClInclude>
+    <ClInclude Include="Defines.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="E:\Projects\ert\snAIk\source\SnAIk\CMakeLists.txt" />
